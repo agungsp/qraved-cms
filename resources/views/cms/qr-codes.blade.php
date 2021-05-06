@@ -140,7 +140,7 @@
         $('body').on('click', '#btnSave', function () {
             $.ajax({
                 type: "POST",
-                url: "{{ route('cms.qr-code.store') }}",
+                url: "{{ secure_url(route('cms.qr-code.store', [], false)) }}",
                 data: $('#formQrCode').serialize(),
                 success: function(response) {
                     lastId = 0;
@@ -193,7 +193,7 @@
                 if (result.isDenied) {
                     $.ajax({
                         type: "POST",
-                        url: "{{ route('cms.qr-code.delete') }}",
+                        url: "{{ secure_url(route('cms.qr-code.delete', [], false)) }}",
                         data: {
                             id: id
                         },
@@ -240,7 +240,7 @@
 
         function loadList() {
             loading();
-            $.get(`{{ route('cms.qr-code.index') }}/get-qrcodes/${lastId}`, function (res) {
+            $.get(`{{ secure_url(route('cms.qr-code.index', [], false)) }}/get-qrcodes/${lastId}`, function (res) {
                 if (lastId == 0) {
                     $('#qrcode_list').html(res.html);
                 }
@@ -261,7 +261,7 @@
         }
 
         function getQR(code) {
-            $.get(`{{ route('cms.qr-code.index') }}/get-qrcode/${code}`, function (res) {
+            $.get(`{{ secure_url(route('cms.qr-code.index', [], false)) }}/get-qrcode/${code}`, function (res) {
                 $('#qrDisplay').html(res);
             });
         }

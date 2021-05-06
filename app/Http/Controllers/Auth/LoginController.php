@@ -29,7 +29,7 @@ class LoginController extends Controller
     // protected $redirectTo = RouteServiceProvider::HOME;
     public function redirectTo()
     {
-        return route('cms.dashboard.index');
+        return secure_url(route('cms.dashboard.index', [], false));
     }
 
     /**

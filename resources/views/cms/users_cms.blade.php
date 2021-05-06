@@ -45,7 +45,7 @@
             if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
                 loading();
                 if (hasNext) {
-                    $.get(`{{ route('cms.user.cms.index') }}/get-users/${lastId}`, function (res) {
+                    $.get(`{{ secure_url(route('cms.user.cms.index', [], false)) }}/get-users/${lastId}`, function (res) {
                         if (lastId == 0) {
                             $('#user_list').html(res.html);
                         }
@@ -62,7 +62,7 @@
 
         $(document).ready(() => {
             loading();
-            $.get(`{{ route('cms.user.cms.index') }}/get-users/${lastId}`, function (res) {
+            $.get(`{{ secure_url(route('cms.user.cms.index', [], false)) }}/get-users/${lastId}`, function (res) {
                 if (lastId == 0) {
                     $('#user_list').html(res.html);
                 }

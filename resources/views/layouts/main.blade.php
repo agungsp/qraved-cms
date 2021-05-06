@@ -14,11 +14,11 @@
         {{-- TITLE --}}
         <title>@yield('title') | Qraved CMS</title>
 
-        <link rel="icon" href="{{ asset('assets/img/favicon.ico') }}" type="image/x-icon"/>
-        <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet" />
-        <link href="{{ asset('assets/plugins/fontawesome/css/all.min.css') }}" rel="stylesheet" />
-        <link href="{{ asset('assets/css/qraved-styles.css') }}" rel="stylesheet" />
-        <link href="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" />
+        <link rel="icon" href="{{ secure_asset('assets/img/favicon.ico') }}" type="image/x-icon"/>
+        <link href="{{ secure_asset('assets/css/styles.css') }}" rel="stylesheet" />
+        <link href="{{ secure_asset('assets/plugins/fontawesome/css/all.min.css') }}" rel="stylesheet" />
+        <link href="{{ secure_asset('assets/css/qraved-styles.css') }}" rel="stylesheet" />
+        <link href="{{ secure_asset('assets/plugins/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" />
 
         {{-- CSS --}}
         @yield('css')
@@ -27,7 +27,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-light bg-light shadow-sm">
             <a class="navbar-brand" href="#">
-                <img src="{{ asset('assets/img/logo.png') }}" width="130" alt="Qraved Logo">
+                <img src="{{ secure_asset('assets/img/logo.png') }}" width="130" alt="Qraved Logo">
                 <span id="cms-text" class="align-bottom"
                       style="font-weight: 800; color: #343a40; font-style: italic;"
                 >
@@ -43,14 +43,14 @@
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                         <a class="dropdown-item" href="#">Profile</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ route('logout') }}"
+                        <a class="dropdown-item" href="{{ secure_url(route('logout', [], false)) }}"
                            onclick="event.preventDefault();
                            document.getElementById('logout-form').submit();">
 
                             Logout
 
                         </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        <form id="logout-form" action="{{ secure_url(route('logout',[], false)) }}" method="POST" class="d-none">
                             @csrf
                         </form>
                     </div>
@@ -75,7 +75,7 @@
                                     <h5>{{ Str::limit(auth()->user()->name, 10) }}</h5>
                                 </div>
                             </div>
-                            <a class="nav-link" href="{{ route('cms.dashboard.index') }}">
+                            <a class="nav-link" href="{{ secure_url(route('cms.dashboard.index', [], false)) }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
@@ -88,29 +88,29 @@
                             </a>
                             <div class="collapse" id="collapseUsers" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ route('cms.user.cms.index') }}">CMS</a>
-                                    <a class="nav-link" href="{{ route('cms.user.qraved.index') }}">Qraved</a>
+                                    <a class="nav-link" href="{{ secure_url(route('cms.user.cms.index', [], false)) }}">CMS</a>
+                                    <a class="nav-link" href="{{ secure_url(route('cms.user.qraved.index', [], false)) }}">Qraved</a>
                                 </nav>
                             </div>
-                            <a class="nav-link" href="{{ route('cms.restaurant.index') }}">
+                            <a class="nav-link" href="{{ secure_url(route('cms.restaurant.index', [], false)) }}">
                                 <div class="sb-nav-link-icon">
                                     <i class="fas fa-utensils"></i>
                                 </div>
                                 Restaurants
                             </a>
-                            <a class="nav-link" href="{{ route('cms.qr-code.index') }}">
+                            <a class="nav-link" href="{{ secure_url(route('cms.qr-code.index', [], false)) }}">
                                 <div class="sb-nav-link-icon">
                                     <i class="fas fa-qrcode"></i>
                                 </div>
                                 QR Codes
                             </a>
-                            <a class="nav-link" href="{{ route('cms.quiz.index') }}">
+                            <a class="nav-link" href="{{ secure_url(route('cms.quiz.index', [], false)) }}">
                                 <div class="sb-nav-link-icon">
                                     <i class="fas fa-question"></i>
                                 </div>
                                 Quiz
                             </a>
-                            <a class="nav-link" href="{{ route('cms.setting.index') }}">
+                            <a class="nav-link" href="{{ secure_url(route('cms.setting.index', [], false)) }}">
                                 <div class="sb-nav-link-icon">
                                     <i class="fas fa-cogs"></i>
                                 </div>
@@ -156,10 +156,10 @@
         {{-- MODAL --}}
         @yield('modal')
 
-        <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
-        <script src="{{ asset('assets/plugins/bootstrap/bootstrap.bundle.min.js') }}"></script>
-        <script src="{{ asset('assets/js/scripts.js') }}"></script>
-        <script src="{{ asset('assets/plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
+        <script src="{{ secure_asset('assets/plugins/jquery/jquery.min.js') }}"></script>
+        <script src="{{ secure_asset('assets/plugins/bootstrap/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ secure_asset('assets/js/scripts.js') }}"></script>
+        <script src="{{ secure_asset('assets/plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
         <script>
             $(document).ready(() => {
                 $.ajaxSetup({

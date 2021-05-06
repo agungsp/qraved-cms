@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('password.email') }}">
+                    <form method="POST" action="{{ secure_url(route('password.email', [], false)) }}">
                         @csrf
 
                         <div class="form-group row">
