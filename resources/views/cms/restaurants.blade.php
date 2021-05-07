@@ -336,7 +336,7 @@
             const id = $(this).attr('data-id');
             $.get(`{{ route('cms.restaurant.index') }}/qr-code-preview/${id}`, function (res) {
                 $('#qr_code_preview_wrapper').html(res);
-                $('#btnExport').attr('href', `{{ route('cms.restaurant.index') }}/export/${id}`);
+                $('#btnExport').attr('href', `/export/${id}`);
                 $('#modelQRCodePreview').modal('show');
             });
         });
