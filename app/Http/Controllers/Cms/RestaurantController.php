@@ -145,7 +145,7 @@ class RestaurantController extends Controller
         $resto = Restaurant::find($restaurant_id);
             return SnappyPdf::loadView('exports.qr_code', compact('resto'))
                   ->setPaper('a5')
-                  ->inline($resto->name.'.pdf');
+                  ->download($resto->name.'.pdf');
 
     }
 }
