@@ -21,7 +21,7 @@
 </head>
 <body>
     <div class="text-center" style="margin-right: -0.75rem; margin-left: -0.75rem;">
-        <span style="display: block;">{!! QrCode::size(150)->generate($resto->qr_code->code); !!}</span>
+        <span style="display: block;">{!! QrCode::size(300)->generate($resto->qr_code->code); !!}</span>
         <h4>{{ $resto->name }}</h4>
     </div>
 </body>

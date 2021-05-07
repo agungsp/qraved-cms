@@ -88,7 +88,7 @@ Route::prefix('images')->group(function () {
     Route::get('answer_image/{path}', [\App\Http\Controllers\Cms\ImageController::class, 'answer_image'])->name('images.answer_image');
 });
 
-Route::get('export/{restaurant_id}', [App\Http\Controllers\Cms\RestaurantController::class, 'export'])->name('cms.restaurant.export');
+Route::get('restaurants/export/{restaurant_id}', [App\Http\Controllers\Cms\RestaurantController::class, 'export'])->name('cms.restaurant.export');
 
 Route::get('print', function () {
 
