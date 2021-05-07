@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\Setting;
+use Illuminate\Support\Str;
 
 
 class SettingHelper {
@@ -20,5 +21,12 @@ class SettingHelper {
     public static function get($key)
     {
         return static::getAll()[$key];
+    }
+
+    public static function qrCodeBuilder($qrCodeRandomString)
+    {
+        $setting = static::getAll();
+        $url = isset($setting['qr_url']) ? Str::replaceLast('/', '', $setting['qr_url']) . '/' : '';
+        return $url . $qrCodeRandomString;
     }
 }

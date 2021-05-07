@@ -18,7 +18,7 @@
 
 {{-- CONTENT --}}
 @section('content')
-    @include('includes.nav-page')
+    @include('includes.nav-page', ['showBtnNew' => false])
 
     {{-- Data Wrapper --}}
     <div id="user_list"></div>

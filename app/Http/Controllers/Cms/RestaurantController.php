@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Cms;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Restaurant;
+use App\Helpers\SettingHelper;
+use App\Models\QrCode;
+use SimpleSoftwareIO\QrCode\Facades\QrCode as GenerateQR;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 
 class RestaurantController extends Controller
 {
@@ -89,5 +93,59 @@ class RestaurantController extends Controller
             'success' => $success,
             'message' => $message,
         ];
+    }
+
+    public function qrConnect(Request $request)
+    {
+        $success = true;
+        $message = '';
+
+        $request->validate([
+            'linkCode' => ['required']
+        ], [
+            'linkCode.required' => 'QR Code field is required!'
+        ]);
+
+        $data = [
+            'qr_id' => $request->linkCode,
+            'updated_by' => auth()->id(),
+        ];
+
+        try {
+            Restaurant::find($request->linkRestoId)
+                      ->update($data);
+            $message = 'The QR Code has been connected.';
+
+        } catch (\Exception $e) {
+
+            $success = false;
+            $message = $e->getMessage();
+
+        }
+
+        return [
+            'success' => $success,
+            'message' => $message,
+        ];
+    }
+
+    public function qrCodePreview($restaurant_id)
+    {
+        $resto = Restaurant::find($restaurant_id);
+        return view('exports.qr_code', compact('resto'))->render();
+    }
+
+    public function availableQr()
+    {
+        return QrCode::available()->get(['id', 'code as text'])->toArray();
+    }
+
+    public function export($restaurant_id)
+    {
+        $resto = Restaurant::find($restaurant_id);
+            return SnappyPdf::loadView('exports.qr_code', compact('resto'))
+                  ->setPaper('a5')
+                  ->inline($resto->name.'.pdf');
+
     }
 }

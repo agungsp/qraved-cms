@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Setting;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +15,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        DB::transaction(function () use ($request) {
+            Setting::updateOrCreate(
+                ['key' => 'qr_url'],
+                ['value' => 'localhost']
+            );
+            Setting::updateOrCreate(
+                ['key' => 'qr_length'],
+                ['value' => 15]
+            );
+            Setting::updateOrCreate(
+                ['key' => 'qr_prefix'],
+                ['value' => null]
+            );
+        });
     }
 }

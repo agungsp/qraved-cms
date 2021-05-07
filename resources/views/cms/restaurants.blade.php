@@ -8,7 +8,6 @@
 {{-- CSS --}}
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 @endsection
 
 {{-- TITLE --}}
@@ -88,37 +87,53 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalLinkLabel">Add/Edit Restaurant</h5>
+                    <h5 class="modal-title" id="modalLinkLabel">Connect to QR</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="formLink">
+                    <form id="formLink" method="POST">
                         <div class="form-group">
                             <label for="linkResto">Resto</label>
                             <input type="text" name="linkRestoName" id="linkRestoName" class="form-control bg-white" disabled>
                             <input type="hidden" name="linkRestoId" id="linkRestoId">
                         </div>
                         <div class="form-group">
-                            <label for="linkCode">Availeble QR Code</label>
-                            <select class="select2" name="linkCode" id="linkCode">
-                                <option></option>
-                                @foreach (\App\Models\QrCode::available()->get() as $qr)
-                                    <option value="{{ $qr->id }}">{{ $qr->code }}</option>
-                                @endforeach
-                            </select>
+                            <label>Availeble QR Code</label>
+                            <select class="form-control select2" name="linkCode" id="linkCode" style="width: 100%;"></select>
+                            <span id="linkCode_invalid" class="invalid-feedback d-block" role="alert"></span>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" id="btnClose" class="btn btn-light" data-dismiss="modal">Close</button>
-                    <button type="button" id="btnDelete" class="btn qraved-btn-danger d-none">
-                        <i class="fa fa-trash"></i> Delete
-                    </button>
-                    <button type="button" id="btnSave" class="btn qraved-btn-primary">
+                    <button type="submit" form="formLink" class="btn qraved-btn-primary">
                         <i class="fa fa-save"></i> Save
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modelQRCodePreview" tabindex="-1" role="dialog" aria-labelledby="modelQRCodePreviewLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modelQRCodePreviewLabel">QR Code Preview</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="qr_code_preview_wrapper"></div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" id="btnClose" class="btn btn-light" data-dismiss="modal">Close</button>
+                    <a href="" target="_blank" type="button" id="btnExport" class="btn qraved-btn-primary">
+                        <i class="fas fa-file-pdf"></i> Export
+                    </a>
                 </div>
             </div>
         </div>
@@ -140,6 +155,7 @@
         }
 
         $('body').on('click', '#btnNew', function () {
+            $('#id').val('');
             $('#btnClose').removeClass('d-none');
             $('#btnDelete').addClass('d-none');
             $('#formRestaurant').trigger('reset');
@@ -152,6 +168,7 @@
             const name = $(this).attr('data-name');
             $('#linkRestoId').val(id);
             $('#linkRestoName').val(name);
+            $('#linkCode').val('');
             $('#modalLink').modal('show');
         });
 
@@ -196,6 +213,52 @@
                         }
                         else if (result.isDismissed) {
                             $('#modalRestaurant').modal('hide');
+                            loadList();
+                        }
+                    });
+                },
+                error: function(response) {
+                    if (response.status) {
+                        showValidation(response.responseJSON.errors);
+                    }
+                    else {
+                        Swal.fire({
+                            icon : response.success ? 'success' : 'error',
+                            title: response.success ? 'Success' : 'Failed',
+                            text : response.message,
+                            // timer: 2000,
+                            // timerProgressBar: true,
+                        });
+                    }
+                }
+            });
+        });
+
+        $('#formLink').submit(function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            $.ajax({
+                type: "POST",
+                url: "{{ route('cms.restaurant.qr-connect') }}",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    lastId = 0;
+                    hasNext = true;
+                    Swal.fire({
+                        icon : response.success ? 'success' : 'error',
+                        title: response.success ? `Success` : 'Failed',
+                        text : response.message,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#modalLink').modal('hide');
+                            loadList();
+                        }
+                        else if (result.isDismissed) {
+                            $('#modalLink').modal('hide');
                             loadList();
                         }
                     });
@@ -266,7 +329,16 @@
                         }
                     });
                 }
-            })
+            });
+        });
+
+        $('body').on('click', '#btnShowQR', function () {
+            const id = $(this).attr('data-id');
+            $.get(`{{ route('cms.restaurant.index') }}/qr-code-preview/${id}`, function (res) {
+                $('#qr_code_preview_wrapper').html(res);
+                $('#btnExport').attr('href', `{{ route('cms.restaurant.index') }}/export/${id}`);
+                $('#modelQRCodePreview').modal('show');
+            });
         });
 
         function showValidation(errors) {
@@ -278,6 +350,7 @@
 
         function loadList() {
             loading();
+            qrData();
             $.get(`{{ route('cms.restaurant.index') }}/get-restaurants/${lastId}`, function (res) {
                 if (lastId == 0) {
                     $('#resto_list').html(res.html);
@@ -295,6 +368,17 @@
                 else {
                     $('#btnMore').addClass('d-none');
                 }
+            });
+        }
+
+        function qrData() {
+            $.get("{{ route('cms.restaurant.available-qr') }}", function (res) {
+                let html = '';
+                html += `<option></option>`;
+                res.forEach(row => {
+                    html += `<option value="${row.id}">${row.text}</option>`;
+                });
+                $('#linkCode').html(html);
             });
         }
 

@@ -18,7 +18,18 @@
 
 {{-- CONTENT --}}
 @section('content')
-    @for ($i = 0; $i < 10; $i++)
+
+    <div class="row justify-content-center">
+        <div class="col-7">
+            <img class="img-fluid" src="{{ asset('assets/img/undraw_under_construction_46pa.svg') }}" alt="Under Development">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-7 text-center">
+            <span class="display-4" style="text-decoration: underline; color: #dd0000">Under Development</span>
+        </div>
+    </div>
+    {{-- @for ($i = 0; $i < 10; $i++)
         <div class="card mb-3 shadow-sm">
             <div class="card-body p-2">
                 <div class="row">
@@ -33,7 +44,7 @@
                 </div>
             </div>
         </div>
-    @endfor
+    @endfor --}}
 @endsection
 
 {{-- MODAL --}}

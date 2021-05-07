@@ -27,7 +27,7 @@
                     <form id="formSetting" method="POST">
                         <div class="form-group">
                             <label for="url">QR URL</label>
-                            <input type="text" name="url" id="url" class="form-control" value="{{ $settings['qr_url'] ?? '' }}" autofocus>
+                            <input type="text" name="url" id="url" class="form-control" value="{{ $settings['qr_url'] ?? 'localhost' }}" autofocus>
                             <span id="url_invalid" class="invalid-feedback" role="alert"></span>
                         </div>
                         <div class="form-group">
@@ -35,14 +35,14 @@
                                 QR Length (max 20)
                                 <span class="small text-muted">length = [prefix + random string]</span>
                             </label>
-                            <input type="number" name="qr_length" id="qr_length" value="15" class="form-control" value="{{ $settings['qr_length'] ?? '' }}">
+                            <input type="number" name="qr_length" id="qr_length" class="form-control" value="{{ $settings['qr_length'] ?? '15' }}">
                             <span id="qr_length_invalid" class="invalid-feedback" role="alert"></span>
                         </div>
                         <div class="form-group">
                             <label for="qr_prefix">
                                 QR Prefix
                             </label>
-                            <input type="text" name="qr_prefix" id="qr_prefix" value="" class="form-control" value="{{ $settings['qr_prefix'] ?? '' }}">
+                            <input type="text" name="qr_prefix" id="qr_prefix" class="form-control" value="{{ $settings['qr_prefix'] ?? '' }}">
                         </div>
                         <div class="row justify-content-end">
                             <div class="col-auto">
@@ -57,7 +57,7 @@
                     <span class="small text-muted">Example QR</span>
                     <span class="d-block text-center pt-1" id="qr_display"></span>
                     <span class="d-block text-center pt-1 pb-3" style="font-size: 20px;">
-                        <span id="url_display"></span>/<span id="code_display"></span>
+                        <span id="full_text_display"></span>
                     </span>
                 </div>
             </div>
@@ -78,8 +78,8 @@
         let full_text = '';
 
         $('body').on('keyup', '#url', function () {
-            $('#url_display').html($(this).val());
-            getQRCode($('#url').val() + '/' + full_text);
+            setFullText();
+            getQRCode(full_text);
         });
 
         $('body').on('keyup', '#qr_prefix', function () {
@@ -92,10 +92,9 @@
         });
 
         function setFullText() {
-            full_text = ($('#qr_prefix').val() + randomStringExample).substr(0, $('#qr_length').val());
-            $('#code_display').html(full_text);
-
-            getQRCode($('#url').val() + '/' + full_text);
+            full_text = $('#url').val() + '/' + ($('#qr_prefix').val() + randomStringExample).substr(0, $('#qr_length').val());
+            $('#full_text_display').html(full_text);
+            getQRCode(full_text);
         }
 
         function getQRCode(text) {
@@ -155,7 +154,7 @@
 
         $(document).ready(() => {
             setFullText();
-            getQRCode($('#url').val() + '/' + full_text);
+            getQRCode(full_text);
         });
 
 

@@ -7,8 +7,10 @@
             </button>
         </div>
 
-        <button id="btnNew" class="btn qraved-btn-primary">
-            <i class="fa fa-plus"></i> New
-        </button>
+        @if ($showBtnNew ?? true)
+            <button id="btnNew" class="btn qraved-btn-primary">
+                <i class="fa fa-plus"></i> New
+            </button>
+        @endif
     </div>
 </div>

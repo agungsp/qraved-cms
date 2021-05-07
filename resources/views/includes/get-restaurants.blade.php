@@ -14,7 +14,7 @@
                 </div>
                 @if (!empty($restaurant->qr_id))
                     <div class="col-auto">
-                        <a href="javascript:void(0)" class="float-right text-danger stretched-link m-1">
+                        <a href="javascript:void(0)" id="btnShowQR" class="float-right text-danger stretched-link m-1" data-id="{{ $restaurant->id }}">
                             <i class="fa fa-qrcode"></i>
                         </a>
                     </div>

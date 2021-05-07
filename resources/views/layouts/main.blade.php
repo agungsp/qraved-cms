@@ -92,17 +92,17 @@
                                     <a class="nav-link" href="{{ route('cms.user.qraved.index') }}">Qraved</a>
                                 </nav>
                             </div>
-                            <a class="nav-link" href="{{ route('cms.restaurant.index') }}">
-                                <div class="sb-nav-link-icon">
-                                    <i class="fas fa-utensils"></i>
-                                </div>
-                                Restaurants
-                            </a>
                             <a class="nav-link" href="{{ route('cms.qr-code.index') }}">
                                 <div class="sb-nav-link-icon">
                                     <i class="fas fa-qrcode"></i>
                                 </div>
                                 QR Codes
+                            </a>
+                            <a class="nav-link" href="{{ route('cms.restaurant.index') }}">
+                                <div class="sb-nav-link-icon">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                Restaurants
                             </a>
                             <a class="nav-link" href="{{ route('cms.quiz.index') }}">
                                 <div class="sb-nav-link-icon">

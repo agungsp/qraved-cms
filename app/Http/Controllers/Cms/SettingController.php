@@ -14,6 +14,7 @@ class SettingController extends Controller
     public function index()
     {
         $settings = SettingHelper::getAll();
+        // dd($settings);
         return view('cms.settings', compact('settings'));
     }
 

@@ -43,14 +43,19 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [App\Http\Controllers\Cms\RestaurantController::class, 'index'])->name('cms.restaurant.index');
         Route::get('get-restaurants/{lastId}', [App\Http\Controllers\Cms\RestaurantController::class, 'getRestaurants'])->name('cms.restaurant.get-restaurants');
         Route::get('get-restaurant/{id}', [App\Http\Controllers\Cms\RestaurantController::class, 'getRestaurant'])->name('cms.restaurant.get-restaurant');
+        Route::get('qr-code-preview/{restaurant_id}', [App\Http\Controllers\Cms\RestaurantController::class, 'qrCodePreview'])->name('cms.restaurant.qr-code-preview');
+        Route::get('available-qr', [App\Http\Controllers\Cms\RestaurantController::class, 'availableQr'])->name('cms.restaurant.available-qr');
+        Route::get('export/{restaurant_id}', [App\Http\Controllers\Cms\RestaurantController::class, 'export'])->name('cms.restaurant.export');
         Route::post('store', [App\Http\Controllers\Cms\RestaurantController::class, 'store'])->name('cms.restaurant.store');
         Route::post('delete', [App\Http\Controllers\Cms\RestaurantController::class, 'delete'])->name('cms.restaurant.delete');
+        Route::post('qr-connect', [App\Http\Controllers\Cms\RestaurantController::class, 'qrConnect'])->name('cms.restaurant.qr-connect');
     });
 
     Route::prefix('qr-codes')->group(function () {
         Route::get('/', [App\Http\Controllers\Cms\QrCodeController::class, 'index'])->name('cms.qr-code.index');
         Route::get('get-qrcodes/{lastId}', [App\Http\Controllers\Cms\QrCodeController::class, 'getQrcodes'])->name('cms.qr-code.get-qrcodes');
         Route::get('get-qrcode/{code}', [App\Http\Controllers\Cms\QrCodeController::class, 'getQrcode'])->name('cms.qr-code.get-qrcode');
+        Route::get('qr-builder/{code}', [App\Http\Controllers\Cms\QrCodeController::class, 'qrBuilder'])->name('cms.qr-code.qr-builder');
         Route::post('store', [App\Http\Controllers\Cms\QrCodeController::class, 'store'])->name('cms.qr-code.store');
         Route::post('delete', [App\Http\Controllers\Cms\QrCodeController::class, 'delete'])->name('cms.qr-code.delete');
     });

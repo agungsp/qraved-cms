@@ -97,9 +97,11 @@
         });
 
         $('body').on('click', '#btnGenerateCode', function () {
-            let code = generateRandomString(15);
-            $('#code').val(code);
-            getQR(code);
+            let code = generateRandomString({{ SettingHelper::getAll()['qr_length'] }}, "{{ SettingHelper::getAll()['qr_prefix'] ?? '' }}");
+            $.get(`{{ route('cms.qr-code.index') }}/qr-builder/${code}`, function (res) {
+                $('#code').val(res);
+                getQR(res);
+            });
         });
 
         $('body').on('change', '#makeAFew', function () {
@@ -250,7 +252,6 @@
                 lastId += 50;
                 hasNext = res.hasNext;
                 loading();
-                console.log(hasNext);
                 if (hasNext) {
                     $('#btnMore').removeClass('d-none');
                 }
@@ -261,7 +262,7 @@
         }
 
         function getQR(code) {
-            $.get(`{{ route('cms.qr-code.index') }}/get-qrcode/${code}`, function (res) {
+            $.get(`{{ route('cms.qr-code.index') }}/get-qrcode/${btoa(code)}`, function (res) {
                 $('#qrDisplay').html(res);
             });
         }

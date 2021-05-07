@@ -8,6 +8,7 @@ use App\Models\QrCode;
 use SimpleSoftwareIO\QrCode\Facades\QrCode as GenerateQR;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use App\Helpers\SettingHelper;
 
 class QrCodeController extends Controller
 {
@@ -27,7 +28,7 @@ class QrCodeController extends Controller
 
     public function getQrcode($code)
     {
-        return GenerateQR::backgroundColor(255, 255, 255, 0)->generate($code);
+        return GenerateQR::backgroundColor(255, 255, 255, 0)->generate(base64_decode($code));
     }
 
     public function store(Request $request)
@@ -39,11 +40,15 @@ class QrCodeController extends Controller
             'total' => Rule::requiredIf($request->makeAFew),
         ]);
         $total = $request->total ?? 1;
+        $qr_length = SettingHelper::getAll()['qr_length'];
+        $qr_prefix = SettingHelper::getAll()['qr_prefix'];
 
         $data = [];
         for ($i = 0; $i < $total; $i++) {
             $data[$i] = [
-                'code' => $request->makeAFew ? Str::lower(Str::random(15)) : $request->code,
+                'code' => $request->makeAFew ?
+                          SettingHelper::qrCodeBuilder($qr_prefix . Str::lower(Str::random($qr_length - strlen($qr_prefix))))
+                          : $request->code,
                 'updated_by' => auth()->id(),
             ];
         }
@@ -93,5 +98,10 @@ class QrCodeController extends Controller
             'success' => $success,
             'message' => $message,
         ];
+    }
+
+    public function qrBuilder($randomCode)
+    {
+        return SettingHelper::qrCodeBuilder($randomCode);
     }
 }
