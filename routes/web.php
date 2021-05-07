@@ -45,7 +45,6 @@ Route::middleware('auth')->group(function () {
         Route::get('get-restaurant/{id}', [App\Http\Controllers\Cms\RestaurantController::class, 'getRestaurant'])->name('cms.restaurant.get-restaurant');
         Route::get('qr-code-preview/{restaurant_id}', [App\Http\Controllers\Cms\RestaurantController::class, 'qrCodePreview'])->name('cms.restaurant.qr-code-preview');
         Route::get('available-qr', [App\Http\Controllers\Cms\RestaurantController::class, 'availableQr'])->name('cms.restaurant.available-qr');
-        Route::get('export/{restaurant_id}', [App\Http\Controllers\Cms\RestaurantController::class, 'export'])->name('cms.restaurant.export');
         Route::post('store', [App\Http\Controllers\Cms\RestaurantController::class, 'store'])->name('cms.restaurant.store');
         Route::post('delete', [App\Http\Controllers\Cms\RestaurantController::class, 'delete'])->name('cms.restaurant.delete');
         Route::post('qr-connect', [App\Http\Controllers\Cms\RestaurantController::class, 'qrConnect'])->name('cms.restaurant.qr-connect');
@@ -89,6 +88,7 @@ Route::prefix('images')->group(function () {
     Route::get('answer_image/{path}', [\App\Http\Controllers\Cms\ImageController::class, 'answer_image'])->name('images.answer_image');
 });
 
+Route::get('export/{restaurant_id}', [App\Http\Controllers\Cms\RestaurantController::class, 'export'])->name('cms.restaurant.export');
 
 Route::get('print', function () {
 
