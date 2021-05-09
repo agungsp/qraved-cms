@@ -13,12 +13,12 @@ use Barryvdh\Snappy\Facades\SnappyPdf;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
 
+Route::get('/', function () {
+    return auth()->check() ? redirect()->route('cms.dashboard.index') : redirect()->route('login');
+});
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');*
 
 Route::middleware('auth')->group(function () {

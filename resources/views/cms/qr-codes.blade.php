@@ -56,6 +56,7 @@
                             </div>
                             <span id="code_invalid" class="invalid-feedback" role="alert"></span>
                         </div>
+                        <span id="qr_connected_display" class="small font-italic text-danger"></span>
                         <div id="make_a_few_wrapper">
                             <hr>
                             <div class="custom-control custom-switch">
@@ -120,7 +121,9 @@
             $('#btnClose').removeClass('d-none');
             $('#btnDelete').addClass('d-none');
             $('#formQrCode').trigger('reset');
+            $('#id').val('');
             $('#qrDisplay').html('');
+            $('#qr_connected_display').html('');
             $('#make_a_few_wrapper').removeClass('d-none');
             $('#modalQrCodeLabel').html('Add QR Code');
             $('#modalQrCode').modal('show');
@@ -133,11 +136,18 @@
         $('body').on('click', '#cardQrCode', function () {
             const id = $(this).attr('data-id');
             const code = $(this).attr('data-code');
+            const restaurant = $(this).attr('data-restaurant');
 
             $('#make_a_few_wrapper').addClass('d-none');
 
             $('#id').val(id);
             $('#code').val(code);
+            if (restaurant != '') {
+                $('#qr_connected_display').html('Connected with restaurant = ' + restaurant);
+            }
+            else {
+                $('#qr_connected_display').html('');
+            }
             getQR(code);
             $('#modalQrCodeLabel').html('Edit QR Code');
             $('#btnClose').addClass('d-none');
