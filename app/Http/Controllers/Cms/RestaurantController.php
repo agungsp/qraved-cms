@@ -152,8 +152,9 @@ class RestaurantController extends Controller
 
     public function getRestoByQr(Request $request)
     {
+        $url = env('APP_ENV') !== 'local' ? str_replace('http', 'https', $request->fullUrl()) : $request->fullUrl();
         try {
-            $restaurant = QrCode::where('code', $request->fullUrl())->first()->restaurant->id;
+            $restaurant = QrCode::where('code', $url)->first()->restaurant->id;
             return StdResponseHelper::make(true, '', compact('restaurant'));
         } catch (\Exception $e) {
             return StdResponseHelper::make(false, $e->getMessage());
