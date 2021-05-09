@@ -27,7 +27,7 @@
                     <form id="formSetting" method="POST">
                         <div class="form-group">
                             <label for="url">QR URL</label>
-                            <input type="text" name="url" id="url" class="form-control" value="{{ $settings['qr_url'] ?? 'localhost' }}" autofocus>
+                            <input type="text" name="url" id="url" class="form-control" value="{{ url('/resto') }}" readonly>
                             <span id="url_invalid" class="invalid-feedback" role="alert"></span>
                         </div>
                         <div class="form-group">
@@ -42,7 +42,7 @@
                             <label for="qr_prefix">
                                 QR Prefix
                             </label>
-                            <input type="text" name="qr_prefix" id="qr_prefix" class="form-control" value="{{ $settings['qr_prefix'] ?? '' }}">
+                            <input type="text" name="qr_prefix" id="qr_prefix" class="form-control" value="?qr=" readonly>
                         </div>
                         <div class="row justify-content-end">
                             <div class="col-auto">
@@ -92,7 +92,7 @@
         });
 
         function setFullText() {
-            full_text = $('#url').val() + '/' + ($('#qr_prefix').val() + randomStringExample).substr(0, $('#qr_length').val());
+            full_text = $('#url').val() + ($('#qr_prefix').val() + randomStringExample).substr(0, $('#qr_length').val());
             $('#full_text_display').html(full_text);
             getQRCode(full_text);
         }

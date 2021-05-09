@@ -90,6 +90,9 @@ Route::prefix('images')->group(function () {
 
 Route::get('restaurants/export/{restaurant_id}', [App\Http\Controllers\Cms\RestaurantController::class, 'export'])->name('cms.restaurant.export');
 
+Route::get('resto', [\App\Http\Controllers\Cms\RestaurantController::class, 'getRestoByQr'])->name('cms.getRestoByQr');
+
+
 Route::get('print', function () {
 
     return PDF::loadHTML('<h1>Test</h1>')

@@ -177,6 +177,7 @@ return [
         Barryvdh\Snappy\ServiceProvider::class,
         App\Providers\SettingServiceProvider::class,
         App\Providers\StdResponseHelperServiceProvider::class,
+        App\Providers\UserLogHelperServiceProvider::class,
 
     ],
 
@@ -234,6 +235,7 @@ return [
         'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
         'SettingHelper' => App\Helpers\SettingHelper::class,
         'StdResponseHelper' => App\Helpers\StdResponseHelper::class,
+        'UserLogHelper' => App\Helpers\UserLogHelper::class,
     ],
 
 ];

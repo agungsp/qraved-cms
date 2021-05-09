@@ -56,15 +56,17 @@
                             </div>
                             <span id="code_invalid" class="invalid-feedback" role="alert"></span>
                         </div>
-                        <hr>
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="makeAFew" name="makeAFew">
-                            <label class="custom-control-label" for="makeAFew">Make a few</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="total">Total</label>
-                            <input type="number" name="total" id="total" class="form-control" min="1" value="1" disabled>
-                            <span id="total_invalid" class="invalid-feedback" role="alert"></span>
+                        <div id="make_a_few_wrapper">
+                            <hr>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="makeAFew" name="makeAFew">
+                                <label class="custom-control-label" for="makeAFew">Make a few</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="total">Total</label>
+                                <input type="number" name="total" id="total" class="form-control" min="1" value="1" disabled>
+                                <span id="total_invalid" class="invalid-feedback" role="alert"></span>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -98,7 +100,7 @@
 
         $('body').on('click', '#btnGenerateCode', function () {
             let code = generateRandomString({{ SettingHelper::getAll()['qr_length'] }}, "{{ SettingHelper::getAll()['qr_prefix'] ?? '' }}");
-            $.get(`{{ route('cms.qr-code.index') }}/qr-builder/${code}`, function (res) {
+            $.get(`{{ route('cms.qr-code.index') }}/qr-builder/${btoa(code)}`, function (res) {
                 $('#code').val(res);
                 getQR(res);
             });
@@ -119,6 +121,7 @@
             $('#btnDelete').addClass('d-none');
             $('#formQrCode').trigger('reset');
             $('#qrDisplay').html('');
+            $('#make_a_few_wrapper').removeClass('d-none');
             $('#modalQrCodeLabel').html('Add QR Code');
             $('#modalQrCode').modal('show');
         });
@@ -130,6 +133,9 @@
         $('body').on('click', '#cardQrCode', function () {
             const id = $(this).attr('data-id');
             const code = $(this).attr('data-code');
+
+            $('#make_a_few_wrapper').addClass('d-none');
+
             $('#id').val(id);
             $('#code').val(code);
             getQR(code);

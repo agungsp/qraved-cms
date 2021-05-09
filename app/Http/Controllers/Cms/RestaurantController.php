@@ -9,6 +9,7 @@ use App\Helpers\SettingHelper;
 use App\Models\QrCode;
 use SimpleSoftwareIO\QrCode\Facades\QrCode as GenerateQR;
 use Barryvdh\Snappy\Facades\SnappyPdf;
+use App\Helpers\StdResponseHelper;
 
 class RestaurantController extends Controller
 {
@@ -147,5 +148,15 @@ class RestaurantController extends Controller
                   ->setPaper('a5')
                   ->download($resto->name.'.pdf');
 
+    }
+
+    public function getRestoByQr(Request $request)
+    {
+        try {
+            $restaurant = QrCode::where('code', $request->fullUrl())->first()->restaurant->pluck('id')->first();
+            return StdResponseHelper::make(true, '', compact('restaurant'));
+        } catch (\Exception $e) {
+            return StdResponseHelper::make(false, $e->getMessage());
+        }
     }
 }

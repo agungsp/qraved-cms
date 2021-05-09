@@ -26,7 +26,7 @@ class SettingHelper {
     public static function qrCodeBuilder($qrCodeRandomString)
     {
         $setting = static::getAll();
-        $url = isset($setting['qr_url']) ? Str::replaceLast('/', '', $setting['qr_url']) . '/' : '';
+        $url = isset($setting['qr_url']) ? $setting['qr_url'] : '';
         return $url . $qrCodeRandomString;
     }
 }

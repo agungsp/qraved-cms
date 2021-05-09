@@ -102,6 +102,6 @@ class QrCodeController extends Controller
 
     public function qrBuilder($randomCode)
     {
-        return SettingHelper::qrCodeBuilder($randomCode);
+        return SettingHelper::qrCodeBuilder(base64_decode($randomCode));
     }
 }
