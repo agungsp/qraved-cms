@@ -62,9 +62,11 @@ class QrCodeController extends Controller
                 $message = 'New QR Code has been created';
             }
             else {
-                $qr_code = QrCode::find($request->id)
-                                 ->update($data);
-                $message = 'The QR Code has been updated';
+                foreach ($data as $row) {
+                    $qr_code = QrCode::find($request->id)
+                                     ->update($row);
+                    $message = 'The QR Code has been updated';
+                }
             }
 
         } catch (\Exception $e) {
