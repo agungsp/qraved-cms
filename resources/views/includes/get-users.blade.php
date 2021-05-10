@@ -13,6 +13,11 @@
                         (You)
                     @endif
                 </div>
+                <div class="col-auto p-2">
+                    <a class="mr-3" id="btnEdit" href="javascript:void(0)" data-id="{{ $user->id }}" title="Edit">
+                        <i class="fa fa-edit text-warning"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
