@@ -14,7 +14,7 @@ use Barryvdh\Snappy\Facades\SnappyPdf;
 */
 
 
-Auth::routes();
+Auth::routes(['verify' => true ]);
 
 Route::get('/', function () {
     return auth()->check() ? redirect()->route('cms.dashboard.index') : redirect()->route('login');
@@ -24,7 +24,7 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
 
     Route::prefix('dashboad')->group(function () {
-        Route::get('/', [App\Http\Controllers\Cms\DashboardController::class, 'index'])->name('cms.dashboard.index');
+        Route::get('/', [App\Http\Controllers\Cms\DashboardController::class, 'index'])->middleware('verified')->name('cms.dashboard.index');
     });
 
     Route::prefix('users')->group(function () {
@@ -32,6 +32,9 @@ Route::middleware('auth')->group(function () {
         Route::prefix('cms')->group(function () {
             Route::get('/', [App\Http\Controllers\Cms\UserController::class, 'index'])->name('cms.user.cms.index');
             Route::get('get-users/{lastId}', [App\Http\Controllers\Cms\UserController::class, 'getUsers'])->name('cms.user.cms.get-users');
+            Route::get('get-user/{id}', [App\Http\Controllers\Cms\UserController::class, 'getUser'])->name('cms.user.cms.get-user');
+            Route::post('store', [App\Http\Controllers\Cms\UserController::class, 'store'])->name('cms.user.cms.store');
+            Route::post('delete', [App\Http\Controllers\Cms\UserController::class, 'delete'])->name('cms.user.cms.delete');
         });
 
         Route::prefix('qraved')->group(function () {
@@ -73,6 +76,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('profile')->group(function () {
         Route::get('/', [App\Http\Controllers\Cms\ProfileController::class, 'index'])->name('cms.profile.index');
+        Route::post('store', [App\Http\Controllers\Cms\ProfileController::class, 'store'])->name('cms.profile.store');
     });
 
     Route::prefix('settings')->group(function () {
@@ -90,7 +94,8 @@ Route::prefix('images')->group(function () {
 
 Route::get('restaurants/export/{restaurant_id}', [App\Http\Controllers\Cms\RestaurantController::class, 'export'])->name('cms.restaurant.export');
 
-Route::get('resto', [\App\Http\Controllers\Cms\RestaurantController::class, 'getRestoByQr'])->name('cms.getRestoByQr');
+// Route::get('resto', [\App\Http\Controllers\Cms\RestaurantController::class, 'getRestoByQr'])->name('cms.getRestoByQr');
+Route::get('resto', [\App\Http\Controllers\Cms\RestaurantController::class, 'resto'])->name('cms.resto');
 
 
 Route::get('print', function () {

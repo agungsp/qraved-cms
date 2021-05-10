@@ -160,4 +160,9 @@ class RestaurantController extends Controller
             return StdResponseHelper::make(false, $e->getMessage());
         }
     }
+
+    public function resto()
+    {
+        return view('cms.resto');
+    }
 }
