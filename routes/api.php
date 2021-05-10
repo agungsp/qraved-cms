@@ -33,3 +33,7 @@ Route::prefix('quiz')->group(function () {
 Route::prefix('user-log')->group(function () {
     Route::post('store', [\App\Http\Controllers\Api\UserLogController::class, 'store'])->name('api.user-log.store');
 });
+
+Route::prefix('resto')->group(function () {
+    Route::get('get/{unique_code}', [\App\Http\Controllers\Api\RestaurantController::class, 'get'])->name('api.restaurant.get');
+});
