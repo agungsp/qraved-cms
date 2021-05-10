@@ -94,9 +94,7 @@ Route::prefix('images')->group(function () {
 
 Route::get('restaurants/export/{restaurant_id}', [App\Http\Controllers\Cms\RestaurantController::class, 'export'])->name('cms.restaurant.export');
 
-// Route::get('resto', [\App\Http\Controllers\Cms\RestaurantController::class, 'getRestoByQr'])->name('cms.getRestoByQr');
 Route::get('resto', [\App\Http\Controllers\Cms\RestaurantController::class, 'resto'])->name('cms.resto');
-
 
 Route::get('print', function () {
 
