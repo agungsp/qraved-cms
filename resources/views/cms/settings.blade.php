@@ -27,7 +27,7 @@
                     <form id="formSetting" method="POST">
                         <div class="form-group">
                             <label for="url">QR URL</label>
-                            <input type="text" name="url" id="url" class="form-control" value="{{ url('/resto') }}" readonly>
+                            <input type="text" name="url" id="url" class="form-control" value="{{ $settings['qr_url'] ?? url('/resto') }}">
                             <span id="url_invalid" class="invalid-feedback" role="alert"></span>
                         </div>
                         <div class="form-group">
@@ -35,14 +35,14 @@
                                 QR Length (max 20)
                                 <span class="small text-muted">length = [prefix + random string]</span>
                             </label>
-                            <input type="number" name="qr_length" id="qr_length" class="form-control" value="{{ $settings['qr_length'] ?? '15' }}">
+                            <input type="number" name="qr_length" id="qr_length" class="form-control" value="{{ $settings['qr_length'] ?? '20' }}">
                             <span id="qr_length_invalid" class="invalid-feedback" role="alert"></span>
                         </div>
                         <div class="form-group">
                             <label for="qr_prefix">
                                 QR Prefix
                             </label>
-                            <input type="text" name="qr_prefix" id="qr_prefix" class="form-control" value="?qr=" readonly>
+                            <input type="text" name="qr_prefix" id="qr_prefix" class="form-control" value="?res=">
                         </div>
                         <div class="row justify-content-end">
                             <div class="col-auto">
