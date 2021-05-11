@@ -65,7 +65,9 @@
                             <div class="row p-3">
                                 <div class="col-auto pr-1">
                                     <img class="img-thumbnail rounded-circle shadow-sm" width="50"
-                                         src="https://ui-avatars.com/api/?name={{ Str::slug(auth()->user()->name) }}"
+                                    src="{{ empty(auth()->user()->avatar_path) ?
+                                        'https://ui-avatars.com/api/?name=' . Str::slug(auth()->user()->name) :
+                                        route('cms.profile.avatar', auth()->user()->avatar_path) }}"
                                          alt="Profile Picture">
                                 </div>
                                 <div class="col pt-1">
@@ -116,7 +118,7 @@
                                 </div>
                                 Settings
                             </a>
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ route('cms.log.index') }}">
                                 <div class="sb-nav-link-icon">
                                     <i class="fas fa-list"></i>
                                 </div>
