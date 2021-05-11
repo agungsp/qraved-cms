@@ -6,7 +6,7 @@
                     <i class="fa fa-user"></i> {{ Str::limit($log->user->email, 20, '...') }}
                 </div>
                 <div class="col-auto text-muted">
-                    <i class="fas fa-map-marker-alt"></i> {{ Str::limit($log->restaurant->name, 20, '...') }}
+                    <i class="fas fa-map-marker-alt"></i> {{ Str::limit($log->restaurant->name ?? '', 20, '...') }}
                 </div>
                 <div class="col-auto text-muted">
                     <i class="far fa-clock"></i> {{ $log->created_at->toDateTimeString() }}
