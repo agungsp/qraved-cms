@@ -22,6 +22,7 @@ class LogController extends Controller
 
         $logs = QravedUserLog::where('id', '>', $lastId)
                              ->limit(10)
+                             ->orderBy('created_at', 'desc')
                              ->get();
         $hasNext = QravedUserLog::orderBy('id', 'desc')->first()->id;
         return [

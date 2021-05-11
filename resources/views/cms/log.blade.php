@@ -131,6 +131,10 @@
             $('#search').focus();
         });
 
+        $('body').on('click', '#btnMore', function () {
+            loadList();
+        });
+
         function queryFilterBuilder() {
             let sort = $('#sort'),
                 search = $('#search'),
