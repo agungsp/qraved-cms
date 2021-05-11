@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Login')
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -53,12 +55,12 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn qraved-btn-primary">
                                     {{ __('Login') }}
                                 </button>
 
                                 @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                                    <a class="btn btn-link text-danger" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
@@ -67,6 +69,16 @@
                     </form>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-12 text-center mb-3">
+            <span class="small">Powered by</span>
+        </div>
+        <div class="col-12 text-center">
+            <a href="https://monsterar.net/" target="_blank">
+                <img src="{{ asset('assets/img/monster-ar-logo.png') }}" alt="Monster AR Logo" width="100">
+            </a>
         </div>
     </div>
 </div>
