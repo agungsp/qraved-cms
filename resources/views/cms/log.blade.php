@@ -12,6 +12,25 @@
             position: fixed;
             right: 1.5rem;
             width: 21rem;
+            z-index: 1020;
+        }
+
+        #under_develop {
+            position: fixed;
+            right: 1rem;
+            width: 22rem;
+            height: 19rem;
+            z-index: 1030;
+            background-color: #ffffffbf;
+            text-align: center;
+            font-weight: 900;
+            font-size: 2rem;
+            color: #dd3333;
+            padding-top: 5rem;
+            background-size: 80%;
+            background-image: url("{{ asset('assets/img/undraw_under_construction_46pa.svg') }}");
+            background-repeat: no-repeat;
+            background-position: center;
         }
     </style>
 @endsection
@@ -32,6 +51,12 @@
             </button>
             @include('includes.loading')
         </div>
+
+
+        <div id="under_develop">
+            Under Development
+        </div>
+
         <div class="col-lg-4">
             <div class="accordion shadow" id="filter">
                 <div class="card">

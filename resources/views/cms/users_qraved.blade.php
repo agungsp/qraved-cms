@@ -7,7 +7,24 @@
 
 {{-- CSS --}}
 @section('css')
-
+    <style>
+        #under_develop {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            z-index: 1030;
+            background-color: #dededebf;
+            text-align: center;
+            font-weight: 900;
+            font-size: 2rem;
+            color: #dd3333;
+            padding-top: 5rem;
+            background-size: 50%;
+            background-image: url("{{ asset('assets/img/undraw_under_construction_46pa.svg') }}");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    </style>
 @endsection
 
 {{-- TITLE --}}
@@ -19,18 +36,11 @@
 {{-- CONTENT --}}
 @section('content')
 
-    <div class="row justify-content-center">
-        <div class="col-7">
-            <img class="img-fluid" src="{{ asset('assets/img/undraw_under_construction_46pa.svg') }}" alt="Under Development">
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-7 text-center">
-            <span class="display-4" style="text-decoration: underline; color: #dd0000">Under Development</span>
-        </div>
+    <div id="under_develop">
+        Under Developement
     </div>
     {{-- @for ($i = 0; $i < 10; $i++)
-        <div class="card mb-3 shadow-sm">
+        < class="card mb-3 shadow-sm">
             <div class="card-body p-2">
                 <div class="row">
                     <div class="col-auto pl-4">
@@ -43,7 +53,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     @endfor --}}
 @endsection
 

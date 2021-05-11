@@ -7,7 +7,24 @@
 
 {{-- CSS --}}
 @section('css')
-
+    <style>
+        #under_develop {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            z-index: 1030;
+            background-color: #dededebf;
+            text-align: center;
+            font-weight: 900;
+            font-size: 2rem;
+            color: #dd3333;
+            padding-top: 5rem;
+            background-size: 50%;
+            background-image: url("{{ asset('assets/img/undraw_under_construction_46pa.svg') }}");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    </style>
 @endsection
 
 {{-- TITLE --}}
@@ -18,13 +35,8 @@
 
 {{-- CONTENT --}}
 @section('content')
-    <div class="card">
-        <div class="card-body">
-            <div class="d-print-block text-center">
-                {!! QrCode::size(100)->generate(Request::url()); !!}
-                <p>Scan me to return to the original page.</p>
-            </div>
-        </div>
+    <div id="under_develop">
+        Under Developement
     </div>
 @endsection
 
