@@ -20,7 +20,7 @@
             color: #dd3333;
             padding-top: 5rem;
             background-size: 50%;
-            background-image: url("{{ asset('assets/img/undraw_under_construction_46pa.svg') }}");
+            /* background-image: url("{{ asset('assets/img/undraw_under_construction_46pa.svg') }}"); */
             background-repeat: no-repeat;
             background-position: center;
         }
@@ -37,7 +37,7 @@
 @section('content')
 
     <div id="under_develop">
-        Under Developement
+        {{-- Under Developement --}}
     </div>
     {{-- @for ($i = 0; $i < 10; $i++)
         < class="card mb-3 shadow-sm">
