@@ -36,7 +36,7 @@ class QuizController extends Controller
                 $question_images = json_decode($question->question_images);
                 $images = [];
                 foreach ($question_images as $image) {
-                    array_push($images, url('images', $image));
+                    array_push($images, \str_replace('%2F', '/', url('images', $image)));
                 }
                 $question->question_images = $images;
             }
@@ -45,7 +45,7 @@ class QuizController extends Controller
             if ($question->answer_type == 1) {
                 for ($i = 0; $i < count($answers); $i++) {
                     if (isset($answers[$i]->image)) {
-                        $answers[$i]->image = url('images', $answers[$i]->image);
+                        $answers[$i]->image = \str_replace('%2F', '/', url('images', $answers[$i]->image));
                     }
                 }
             }
