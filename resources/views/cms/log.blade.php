@@ -9,28 +9,11 @@
 @section('css')
     <style>
         #filter {
-            position: fixed;
+            position: sticky;
             right: 1.5rem;
-            width: 21rem;
+            top: 75px;
+            /* width: 21rem; */
             z-index: 1020;
-        }
-
-        #under_develop {
-            position: fixed;
-            right: 1rem;
-            width: 22rem;
-            height: 19rem;
-            z-index: 1030;
-            background-color: #ffffffbf;
-            text-align: center;
-            font-weight: 900;
-            font-size: 2rem;
-            color: #dd3333;
-            padding-top: 5rem;
-            background-size: 80%;
-            background-image: url("{{ asset('assets/img/undraw_under_construction_46pa.svg') }}");
-            background-repeat: no-repeat;
-            background-position: center;
         }
     </style>
 @endsection
@@ -52,32 +35,35 @@
             @include('includes.loading')
         </div>
 
-
-        <div id="under_develop">
-            Under Development
-        </div>
-
         <div class="col-lg-4">
             <div class="accordion shadow" id="filter">
                 <div class="card">
                     <div class="card-header" id="headingOne">
                         <a class="text-dark text-decoration-none d-flex justify-content-between" href="javascript:void(0)" data-toggle="collapse"
                            data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Search
+                            <span><i class="fa fa-search mr-1"></i> Search</span>
                             <i class="fas fa-chevron-down mt-1"></i>
                         </a>
                     </div>
 
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
                         data-parent="#filter">
                         <div class="card-body">
                             <select class="form-control mb-2" name="search_field" id="search_field">
-                                <option value="user">User</option>
-                                <option value="resto">Resto</option>
-                                <option value="datetime">Date time</option>
+                                <option value="user.email">User</option>
+                                <option value="restaurant.name">Resto</option>
                                 <option value="action">Action</option>
                             </select>
-                            <input type="search" class="form-control" name="search" id="search" placeholder="Search..." style="width: 100%;" autocomplete="off">
+                            <div class="row">
+                                <div class="col pr-1">
+                                    <input type="search" class="form-control" name="search" id="search" placeholder="Search..." autocomplete="off">
+                                </div>
+                                <div class="col-auto pl-1">
+                                    <button id="btnSearch" class="btn qraved-btn-primary">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -85,17 +71,17 @@
                     <div class="card-header" id="headingTwo">
                         <a class="text-dark text-decoration-none d-flex justify-content-between" href="javascript:void(0)" data-toggle="collapse"
                            data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                            Sort
+                            <span><i class="fas fa-sort mr-2"></i> Sort</span>
                             <i class="fas fa-chevron-down mt-1"></i>
                         </a>
                     </div>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#filter">
+                    <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#filter">
                         <div class="card-body row">
                             <div class="col-8">
                                 <select class="form-control mb-2" name="sort_field" id="sort_field">
-                                    <option value="user">User</option>
-                                    <option value="resto">Resto</option>
-                                    <option value="datetime" selected>Date time</option>
+                                    <option value="user.email">User</option>
+                                    <option value="restaurant.name">Resto</option>
+                                    <option value="created_at" selected>Date time</option>
                                     <option value="action">Action</option>
                                 </select>
                             </div>
@@ -110,22 +96,26 @@
                 </div>
                 <div class="card">
                     <div class="card-header" id="headingThree">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                                data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                Collapsible Group Item #3
-                            </button>
-                        </h2>
+                        <a class="text-dark text-decoration-none d-flex justify-content-between" href="javascript:void(0)" data-toggle="collapse"
+                           data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                            <span><i class="fas fa-calendar-alt mr-1"></i> Date Range</span>
+                            <i class="fas fa-chevron-down mt-1"></i>
+                        </a>
                     </div>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#filter">
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                        data-parent="#filter">
                         <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-                            3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
-                            laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin
-                            coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes
-                            anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
-                            occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard
-                            of them accusamus labore sustainable VHS.
+                            <div class="form-group">
+                                <label for="date_start">Start</label>
+                                <input type="date" value="{{ now()->subDays(7)->toDateString() }}" class="form-control" name="date_start" id="date_start">
+                            </div>
+                            <div class="form-group">
+                                <label for="date_end">End</label>
+                                <input type="date" value="{{ now()->toDateString() }}" min="{{ now()->subDays(7)->toDateString() }}" class="form-control" name="date_end" id="date_end">
+                            </div>
+                            <button id="btnApply" class="btn qraved-btn-primary btn-block">
+                                Apply
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -143,21 +133,33 @@
 @section('js')
     <script>
         let lastId = 0;
-        let hasNext = true;
-
-        $('body').on('change', '#search_field', function () {
-            const value = $(this).val();
-            if (value === 'datetime') {
-                $('#search').attr('type', 'datetime-local');
-            }
-            else {
-                $('#search').attr('type', 'search');
-            }
-            $('#search').focus();
-        });
+        let hasNext = false;
+        let refreshCache = false;
 
         $('body').on('click', '#btnMore', function () {
             loadList();
+        });
+
+        $('body').on('change', '#sort_field', function () {
+            loadList();
+        });
+
+        $('body').on('change', '#sort', function () {
+            loadList();
+        });
+
+        $('body').on('click', '#btnSearch', function () {
+            loadList();
+        });
+
+        $('body').on('change', '#date_start', function () {
+            $('#date_end').attr('min', $(this).val());
+        });
+
+        $('body').on('click', '#btnApply', function () {
+            refreshCache = true;
+            loadList();
+            refreshCache = false;
         });
 
         function queryFilterBuilder() {
@@ -165,6 +167,8 @@
                 search = $('#search'),
                 sort_field = $('#sort_field'),
                 search_field = $('#search_field'),
+                date_start = $('#date_start'),
+                date_end = $('#date_end'),
                 query = '';
 
             if (search.val() !== '') {
@@ -181,6 +185,20 @@
                 if (query !== '') query += '&';
                 query += `sort=${sort.val()}`;
             }
+
+            if (date_start.val() !== '') {
+                if (query !== '') query += '&';
+                query += `date_start=${date_start.val()}`;
+            }
+
+            if (date_end.val() !== '') {
+                if (query !== '') query += '&';
+                query += `date_end=${date_end.val()}`;
+            }
+
+            if (query !== '') query += '&';
+            query += `refresh_cache=${refreshCache}`;
+
             return query;
         }
 
@@ -189,16 +207,16 @@
         }
 
         function loadList() {
+            $('#log_list').html('');
             loading();
-            $.get(`{{ route('cms.log.index') }}/get-logs/${lastId}?${queryFilterBuilder()}`, function (res) {
+            $.get(`{{ route('cms.log.index') }}/get-logs?${queryFilterBuilder()}`, function (res) {
                 if (lastId == 0) {
                     $('#log_list').html(res.html);
                 }
                 else {
                     $('#log_list').append(res.html);
                 }
-                lastId = res.lastId;
-                hasNext = res.hasNext;
+
                 loading();
 
                 if (hasNext) {

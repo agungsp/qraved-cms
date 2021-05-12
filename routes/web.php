@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('logs')->group(function () {
         Route::get('/', [App\Http\Controllers\Cms\LogController::class, 'index'])->name('cms.log.index');
-        Route::get('get-logs/{lastId}', [App\Http\Controllers\Cms\LogController::class, 'getLogs'])->name('cms.log.get-logs');
+        Route::get('get-logs', [App\Http\Controllers\Cms\LogController::class, 'getLogs'])->name('cms.log.get-logs');
     });
 
     Route::prefix('profile')->group(function () {
