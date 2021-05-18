@@ -112,7 +112,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="date_end">End</label>
-                                    <input type="date" value="{{ now()->toDateString() }}" min="{{ now()->subDays(7)->toDateString() }}" class="form-control" name="date_end" id="date_end">
+                                    <input type="date" value="{{ now()->toDateString() }}" max="{{ now()->subDays(7)->toDateString() }}" class="form-control" name="date_end" id="date_end">
                                 </div>
                                 <button id="btnApply" class="btn qraved-btn-primary btn-block">
                                     Apply
@@ -159,7 +159,7 @@
         });
 
         $('body').on('change', '#date_start', function () {
-            $('#date_end').attr('min', $(this).val());
+            $('#date_end').attr('max', $(this).val());
         });
 
         $('body').on('click', '#btnApply', function () {

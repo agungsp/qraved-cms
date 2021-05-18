@@ -25,6 +25,8 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('dashboad')->group(function () {
         Route::get('/', [App\Http\Controllers\Cms\DashboardController::class, 'index'])->middleware('verified')->name('cms.dashboard.index');
+        Route::get('get-chart', [App\Http\Controllers\Cms\DashboardController::class, 'getChart'])->name('cms.dashboard.get-chart');
+        Route::get('get-table', [App\Http\Controllers\Cms\DashboardController::class, 'getTable'])->name('cms.dashboard.get-table');
     });
 
     Route::prefix('users')->group(function () {

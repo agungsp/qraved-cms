@@ -7,24 +7,7 @@
 
 {{-- CSS --}}
 @section('css')
-    <style>
-        #under_develop {
-            position: relative;
-            width: 100%;
-            height: 60vh;
-            z-index: 1030;
-            background-color: #dededebf;
-            text-align: center;
-            font-weight: 900;
-            font-size: 2rem;
-            color: #dd3333;
-            padding-top: 5rem;
-            background-size: 50%;
-            /* background-image: url("{{ asset('assets/img/undraw_under_construction_46pa.svg') }}"); */
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-    </style>
+
 @endsection
 
 {{-- TITLE --}}
@@ -35,8 +18,60 @@
 
 {{-- CONTENT --}}
 @section('content')
-    <div id="under_develop">
-        {{-- Under Developement --}}
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-5">
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="date_start">Date Start</label>
+                        <input type="date" name="date_start" id="date_start" class="form-control" value="{{ now()->toDateString() }}">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="date_end">Date End</label>
+                        <input type="date" name="date_end" id="date_end" class="form-control" value="{{ now()->toDateString() }}" max="{{ now()->toDateString() }}">
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button id="btnApply" class="btn qraved-btn-primary" style="margin-top: 2rem;">
+                        Apply
+                    </button>
+                </div>
+            </div>
+            <div class="row justify-content-between mb-5">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="resto">Restaurant</label>
+                        <select name="resto" id="resto" class="form-control">
+                            <option value="0">All</option>
+                            @foreach ($restaurants as $resto)
+                                <option value="{{ $resto->id }}">{{ $resto->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <canvas id="pie_chart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <table class="table table-stripped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Restauran</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -47,5 +82,89 @@
 
 {{-- JS --}}
 @section('js')
+    <script src="{{ asset('assets/plugins/chart-js/Chart.min.js') }}"></script>
+    <script>
+        let pie_chart_ctx = null;
+        let pie_chart = null;
+        let config = {
+            type: 'pie',
+            data: {
+                labels: [],
+                datasets: []
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'left',
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        }
 
+        function queryFilterBuilder() {
+            let date_start = $('#date_start'),
+                date_end = $('#date_end'),
+                filter_resto = $('#resto'),
+                query = '';
+
+            if (date_start.val() !== '') {
+                if (query !== '') query += '&';
+                query += `date_start=${date_start.val()}`;
+            }
+
+            if (date_end.val() !== '') {
+                if (query !== '') query += '&';
+                query += `date_end=${date_end.val()}`;
+            }
+
+            if (filter_resto.val() !== '') {
+                if (query !== '') query += '&';
+                query += `filter_resto=${filter_resto.val()}`;
+            }
+
+            return query;
+        }
+
+        function get_pie_chart() {
+            if (pie_chart_ctx == null) pie_chart_ctx = $('#pie_chart')[0].getContext('2d');
+            if (pie_chart == null) pie_chart = new Chart(pie_chart_ctx, config);
+
+            $.get(`{{ route('cms.dashboard.get-chart') }}?${queryFilterBuilder()}`, function (result) {
+                config.data.labels = result.labels;
+                config.data.datasets = result.datasets;
+                pie_chart.update();
+            });
+        }
+
+        function get_table() {
+            $.get(`{{ route('cms.dashboard.get-table') }}?${queryFilterBuilder()}`, function (result) {
+                $('#table').html(result);
+            });
+        }
+
+        $('body').on('click', '#btnApply', function () {
+            get_pie_chart();
+            get_table();
+        });
+
+        $('body').on('change', '#date_start', function () {
+            if ($(this).val() > $('#date_end').val()) {
+                $('#date_end').val($(this).val());
+            }
+            $('#date_end').attr('max', $(this).val());
+        });
+
+        $('body').on('change', '#resto', function () {
+            get_pie_chart();
+        });
+
+        $(document).ready(() => {
+            get_pie_chart();
+            get_table();
+        });
+    </script>
 @endsection
