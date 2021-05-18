@@ -178,7 +178,7 @@ return [
         App\Providers\SettingServiceProvider::class,
         App\Providers\StdResponseHelperServiceProvider::class,
         App\Providers\UserLogHelperServiceProvider::class,
-
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -236,6 +236,8 @@ return [
         'SettingHelper' => App\Helpers\SettingHelper::class,
         'StdResponseHelper' => App\Helpers\StdResponseHelper::class,
         'UserLogHelper' => App\Helpers\UserLogHelper::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
     ],
 
 ];

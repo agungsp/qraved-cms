@@ -39,6 +39,10 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('qraved')->group(function () {
             Route::get('/', [App\Http\Controllers\Cms\UserController::class, 'qravedIndex'])->name('cms.user.qraved.index');
+            Route::get('get-users/{lastId}', [App\Http\Controllers\Cms\UserController::class, 'qravedGetUsers'])->name('cms.user.qraved.get-users');
+            Route::get('get-user/{id}', [App\Http\Controllers\Cms\UserController::class, 'qravedGetUser'])->name('cms.user.qraved.get-user');
+            Route::get('export-to-csv', [App\Http\Controllers\Cms\UserController::class, 'exportToCsv'])->name('cms.user.qraved.export-to-csv');
+            Route::post('delete', [App\Http\Controllers\Cms\UserController::class, 'qravedDelete'])->name('cms.user.qraved.delete');
         });
     });
 
@@ -73,6 +77,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('logs')->group(function () {
         Route::get('/', [App\Http\Controllers\Cms\LogController::class, 'index'])->name('cms.log.index');
         Route::get('get-logs', [App\Http\Controllers\Cms\LogController::class, 'getLogs'])->name('cms.log.get-logs');
+        Route::get('export-to-csv', [App\Http\Controllers\Cms\LogController::class, 'exportToCsv'])->name('cms.log.export-to-csv');
     });
 
     Route::prefix('profile')->group(function () {

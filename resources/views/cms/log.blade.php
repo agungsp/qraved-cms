@@ -36,89 +36,95 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="accordion shadow" id="filter">
-                <div class="card">
-                    <div class="card-header" id="headingOne">
-                        <a class="text-dark text-decoration-none d-flex justify-content-between" href="javascript:void(0)" data-toggle="collapse"
-                           data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            <span><i class="fa fa-search mr-1"></i> Search</span>
-                            <i class="fas fa-chevron-down mt-1"></i>
-                        </a>
-                    </div>
-
-                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
-                        data-parent="#filter">
-                        <div class="card-body">
-                            <select class="form-control mb-2" name="search_field" id="search_field">
-                                <option value="user.email">User</option>
-                                <option value="restaurant.name">Resto</option>
-                                <option value="action">Action</option>
-                            </select>
-                            <div class="row">
-                                <div class="col pr-1">
-                                    <input type="search" class="form-control" name="search" id="search" placeholder="Search..." autocomplete="off">
-                                </div>
-                                <div class="col-auto pl-1">
-                                    <button id="btnSearch" class="btn qraved-btn-primary">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
+            <div id="filter">
+                <div class="accordion shadow">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <a class="text-dark text-decoration-none d-flex justify-content-between" href="javascript:void(0)" data-toggle="collapse"
+                               data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <span><i class="fa fa-search mr-1"></i> Search</span>
+                                <i class="fas fa-chevron-down mt-1"></i>
+                            </a>
                         </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="headingTwo">
-                        <a class="text-dark text-decoration-none d-flex justify-content-between" href="javascript:void(0)" data-toggle="collapse"
-                           data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                            <span><i class="fas fa-sort mr-2"></i> Sort</span>
-                            <i class="fas fa-chevron-down mt-1"></i>
-                        </a>
-                    </div>
-                    <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#filter">
-                        <div class="card-body row">
-                            <div class="col-8">
-                                <select class="form-control mb-2" name="sort_field" id="sort_field">
+
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                            data-parent="#filter">
+                            <div class="card-body">
+                                <select class="form-control mb-2" name="search_field" id="search_field">
                                     <option value="user.email">User</option>
                                     <option value="restaurant.name">Resto</option>
-                                    <option value="created_at" selected>Date time</option>
                                     <option value="action">Action</option>
                                 </select>
+                                <div class="row">
+                                    <div class="col pr-1">
+                                        <input type="search" class="form-control" name="search" id="search" placeholder="Search..." autocomplete="off">
+                                    </div>
+                                    <div class="col-auto pl-1">
+                                        <button id="btnSearch" class="btn qraved-btn-primary">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-4">
-                                <select class="form-control mb-2" name="sort" id="sort">
-                                    <option value="asc">Asc</option>
-                                    <option value="desc" selected>Desc</option>
-                                </select>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingTwo">
+                            <a class="text-dark text-decoration-none d-flex justify-content-between" href="javascript:void(0)" data-toggle="collapse"
+                               data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                <span><i class="fas fa-sort mr-2"></i> Sort</span>
+                                <i class="fas fa-chevron-down mt-1"></i>
+                            </a>
+                        </div>
+                        <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#filter">
+                            <div class="card-body row">
+                                <div class="col-8">
+                                    <select class="form-control mb-2" name="sort_field" id="sort_field">
+                                        <option value="user.email">User</option>
+                                        <option value="restaurant.name">Resto</option>
+                                        <option value="created_at" selected>Date time</option>
+                                        <option value="action">Action</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <select class="form-control mb-2" name="sort" id="sort">
+                                        <option value="asc">Asc</option>
+                                        <option value="desc" selected>Desc</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingThree">
+                            <a class="text-dark text-decoration-none d-flex justify-content-between" href="javascript:void(0)" data-toggle="collapse"
+                               data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                <span><i class="fas fa-calendar-alt mr-1"></i> Date Range</span>
+                                <i class="fas fa-chevron-down mt-1"></i>
+                            </a>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                            data-parent="#filter">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="date_start">Start</label>
+                                    <input type="date" value="{{ now()->subDays(7)->toDateString() }}" class="form-control" name="date_start" id="date_start">
+                                </div>
+                                <div class="form-group">
+                                    <label for="date_end">End</label>
+                                    <input type="date" value="{{ now()->toDateString() }}" min="{{ now()->subDays(7)->toDateString() }}" class="form-control" name="date_end" id="date_end">
+                                </div>
+                                <button id="btnApply" class="btn qraved-btn-primary btn-block">
+                                    Apply
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-header" id="headingThree">
-                        <a class="text-dark text-decoration-none d-flex justify-content-between" href="javascript:void(0)" data-toggle="collapse"
-                           data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                            <span><i class="fas fa-calendar-alt mr-1"></i> Date Range</span>
-                            <i class="fas fa-chevron-down mt-1"></i>
-                        </a>
-                    </div>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
-                        data-parent="#filter">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="date_start">Start</label>
-                                <input type="date" value="{{ now()->subDays(7)->toDateString() }}" class="form-control" name="date_start" id="date_start">
-                            </div>
-                            <div class="form-group">
-                                <label for="date_end">End</label>
-                                <input type="date" value="{{ now()->toDateString() }}" min="{{ now()->subDays(7)->toDateString() }}" class="form-control" name="date_end" id="date_end">
-                            </div>
-                            <button id="btnApply" class="btn qraved-btn-primary btn-block">
-                                Apply
-                            </button>
-                        </div>
-                    </div>
-                </div>
+
+                <a id="btnExport" href="#" class="btn btn-success btn-block mt-3 shadow">
+                    <i class="fas fa-file-csv"></i> Export to CSV
+                </a>
             </div>
         </div>
     </div>
@@ -225,7 +231,13 @@
                 else {
                     $('#btnMore').addClass('d-none');
                 }
+
+                exportCsvUrl();
             });
+        }
+
+        function exportCsvUrl() {
+            $('#btnExport').attr('href', `{{ route('cms.log.index') }}/export-to-csv?${queryFilterBuilder()}`);
         }
 
         $(document).ready(() => {
