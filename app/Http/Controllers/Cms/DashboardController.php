@@ -60,7 +60,7 @@ class DashboardController extends Controller
             $count = QravedUserLog::whereDate('created_at', '>=', $filter['date_start'])
                                   ->whereDate('created_at', '<', Carbon::create($filter['date_end'])->addDay()->toDateString())
                                   ->where('restaurant_id', $resto->id)
-                                  ->where('action', 'Getting question')
+                                  ->where('action', 'User memulai memainkan game')
                                   ->count();
 
             $html .= '<tr>';
