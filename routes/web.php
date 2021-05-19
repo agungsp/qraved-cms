@@ -21,10 +21,10 @@ Route::get('/', function () {
 });
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');*
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('dashboad')->group(function () {
-        Route::get('/', [App\Http\Controllers\Cms\DashboardController::class, 'index'])->middleware('verified')->name('cms.dashboard.index');
+        Route::get('/', [App\Http\Controllers\Cms\DashboardController::class, 'index'])->name('cms.dashboard.index');
         Route::get('get-chart', [App\Http\Controllers\Cms\DashboardController::class, 'getChart'])->name('cms.dashboard.get-chart');
         Route::get('get-table', [App\Http\Controllers\Cms\DashboardController::class, 'getTable'])->name('cms.dashboard.get-table');
     });

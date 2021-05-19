@@ -24,6 +24,13 @@
     <link href="{{ asset('assets/plugins/fontawesome/css/all.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/qraved-styles.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" />
+    <style>
+        .custom-border {
+            border-style: solid;
+            border-width: 0.25px;
+            border-color: #d3d3d3;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -90,5 +97,15 @@
             @yield('content')
         </main>
     </div>
+    <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
+    <script>
+        let view_password = false;
+        $('body').on('click', '#view-password', function () {
+            view_password = !view_password;
+            $(this).html(view_password ? '<i class="fa fa-eye-slash"></i>' : '<i class="fa fa-eye"></i>');
+            $('#password').attr('type', view_password ? 'text' : 'password');
+
+        });
+    </script>
 </body>
 </html>
