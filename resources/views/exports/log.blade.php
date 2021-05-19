@@ -6,7 +6,7 @@
         <th>user_email</th>
         <th>resto_id</th>
         <th>resto_name</th>
-        <th>question_id</th>
+        {{-- <th>question_id</th> --}}
         <th>question</th>
         <th>answer_status</th>
         <th>action</th>
@@ -21,7 +21,7 @@
             <td>{{ $log->user->email ?? '-' }}</td>
             <td>{{ $log->restaurant->id ?? '-' }}</td>
             <td>{{ $log->restaurant->name ?? '-' }}</td>
-            <td>{{ $log->question->id ?? '-' }}</td>
+            {{-- <td>{{ $log->question->id ?? '-' }}</td> --}}
             <td>{{ $log->question->name ?? '-' }}</td>
             <td>
                 @empty($log->answer)
