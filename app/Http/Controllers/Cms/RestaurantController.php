@@ -43,7 +43,7 @@ class RestaurantController extends Controller
         ]);
 
         $data = [
-            'qraved_resto_mapping_id' => 0, // $request->qraved_mapping_id,
+            'qraved_resto_mapping_id' => $request->qraved_mapping_id,
             'name' => $request->name,
             'alias' => $request->alias,
             'address' => $request->address,
