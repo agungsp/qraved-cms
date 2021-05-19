@@ -143,10 +143,16 @@ class RestaurantController extends Controller
 
     public function export($restaurant_id)
     {
+        $footer = 'By ' . substr(auth()->user()->name, 0, 10) . ' at ' . now()->toDateTimeString() . ' | paper size : A6';
         $resto = Restaurant::find($restaurant_id);
             return SnappyPdf::loadView('exports.qr_code', compact('resto'))
-                  ->setPaper('a5')
-                  ->download($resto->name.'.pdf');
+                            ->setPaper('a6')
+                            ->setOption('margin-top', 5)
+                            ->setOption('margin-bottom', 5)
+                            ->setOption('margin-left', 5)
+                            ->setOption('margin-right', 5)
+                            ->setOption('footer-html', $footer)
+                            ->download($resto->name.'.pdf');
 
     }
 

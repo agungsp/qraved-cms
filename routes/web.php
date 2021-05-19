@@ -99,6 +99,7 @@ Route::middleware('auth')->group(function () {
 Route::prefix('images')->group(function () {
     Route::get('question_images/{path}', [\App\Http\Controllers\Cms\ImageController::class, 'question_images'])->name('images.question_images');
     Route::get('answer_image/{path}', [\App\Http\Controllers\Cms\ImageController::class, 'answer_image'])->name('images.answer_image');
+    Route::get('logo', [\App\Http\Controllers\Cms\ImageController::class, 'logo'])->name('images.logo');
 });
 
 Route::get('restaurants/export/{restaurant_id}', [App\Http\Controllers\Cms\RestaurantController::class, 'export'])->name('cms.restaurant.export');

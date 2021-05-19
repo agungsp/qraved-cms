@@ -25,4 +25,13 @@ class ImageController extends Controller
                     ->header("Content-Type", File::mimeType($path));
         return $response;
     }
+
+    public function logo()
+    {
+        $path = public_path('assets/img/logo.png');
+        if (!File::exists($path)) abort(404);
+        $response = response(File::get($path), 200)
+                    ->header("Content-Type", File::mimeType($path));
+        return $response;
+    }
 }
