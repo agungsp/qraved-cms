@@ -24,7 +24,8 @@ class DashboardController extends Controller
     public function index()
     {
         $restaurants = Restaurant::all();
-        return view('cms.dashboard', compact('restaurants'));
+        $actions = QravedUserLog::groupBy('action')->pluck('action');
+        return view('cms.dashboard', compact('restaurants', 'actions'));
     }
 
     public function getChart(Request $request)
@@ -60,7 +61,7 @@ class DashboardController extends Controller
             $count = QravedUserLog::whereDate('created_at', '>=', $filter['date_start'])
                                   ->whereDate('created_at', '<', Carbon::create($filter['date_end'])->addDay()->toDateString())
                                   ->where('restaurant_id', $resto->id)
-                                  ->where('action', 'User memulai memainkan game')
+                                  ->where('action', str_replace('%20', ' ', $filter['filter_action']))
                                   ->count();
 
             $html .= '<tr>';

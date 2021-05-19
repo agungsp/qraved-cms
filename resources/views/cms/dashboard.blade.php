@@ -58,11 +58,16 @@
 
             <hr>
 
-            <div class="row">
+            <div class="row mt-5">
                 <div class="col-12">
-                    <h5>
-                        Berdasarkan action "User memulai memainkan game"
-                    </h5>
+                    <div class="form-group">
+                        <label for="action">Cari berdasarkan action</label>
+                        <select name="action" id="action" class="form-control">
+                            @foreach ($actions as $action)
+                                <option value="{{ $action }}">{{ $action }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div class="col">
                     <table class="table table-stripped table-hover">
@@ -92,6 +97,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
     <script>
+        let date_start = $('#date_start'),
+            date_end = $('#date_end'),
+            filter_resto = $('#resto'),
+            filter_action = $('#action'),
+            query = '';
         let pie_chart_ctx = null;
         let pie_chart = null;
         let config = {
@@ -126,11 +136,6 @@
         }
 
         function queryFilterBuilder() {
-            let date_start = $('#date_start'),
-                date_end = $('#date_end'),
-                filter_resto = $('#resto'),
-                query = '';
-
             if (date_start.val() !== '') {
                 if (query !== '') query += '&';
                 query += `date_start=${date_start.val()}`;
@@ -144,6 +149,11 @@
             if (filter_resto.val() !== '') {
                 if (query !== '') query += '&';
                 query += `filter_resto=${filter_resto.val()}`;
+            }
+
+            if (filter_action.val() !== '') {
+                if (query !== '') query += '&';
+                query += `filter_action=${filter_action.val()}`;
             }
 
             return query;
@@ -178,12 +188,15 @@
             $('#date_end').attr('max', $(this).val());
         });
 
+        $('body').on('change', '#action', function () {
+            get_table();
+        });
+
         $('body').on('change', '#resto', function () {
             get_pie_chart();
         });
 
         $(document).ready(() => {
-            // Chart.register(ChartDataLabels);
             get_pie_chart();
             get_table();
         });
