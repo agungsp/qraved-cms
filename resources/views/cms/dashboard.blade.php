@@ -39,9 +39,9 @@
                     </button>
                 </div>
             </div>
-            <div class="row justify-content-between mb-5">
-                <div class="col-3">
-                    <div class="form-group">
+            <div class="row justify-content-center mb-5">
+                <div class="col-12">
+                    <div class="form-group" style="width: 10rem;">
                         <label for="resto">Restaurant</label>
                         <select name="resto" id="resto" class="form-control">
                             <option value="0">All</option>
@@ -51,12 +51,19 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-9">
                     <canvas id="pie_chart" width="400" height="200"></canvas>
                 </div>
             </div>
 
+            <hr>
+
             <div class="row">
+                <div class="col-12">
+                    <h5>
+                        Berdasarkan action "User memulai memainkan game"
+                    </h5>
+                </div>
                 <div class="col">
                     <table class="table table-stripped table-hover">
                         <thead>
@@ -82,7 +89,8 @@
 
 {{-- JS --}}
 @section('js')
-    <script src="{{ asset('assets/plugins/chart-js/Chart.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
     <script>
         let pie_chart_ctx = null;
         let pie_chart = null;
@@ -95,11 +103,23 @@
             options: {
                 responsive: true,
                 legend: {
-                    position: 'left',
+                    position: 'left'
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true
+                tooltips: {
+                    enabled: false
+                },
+                plugins: {
+                    datalabels: {
+                        formatter: (value, ctx) => {
+                                let sum = 0;
+                                let dataArr = ctx.chart.data.datasets[0].data;
+                            dataArr.map(data => {
+                                sum += data;
+                            });
+                            let percentage = (value*100 / sum).toFixed(2)+"% | "+value;
+                            return percentage;
+                        },
+                        color: '#fff',
                     }
                 }
             }
@@ -163,6 +183,7 @@
         });
 
         $(document).ready(() => {
+            // Chart.register(ChartDataLabels);
             get_pie_chart();
             get_table();
         });
