@@ -110,6 +110,8 @@
         $('body').on('change', '#makeAFew', function () {
             const checked = $(this).prop('checked');
             $('#code').prop('disabled', checked);
+            $('#btnGenerateCode').prop('disabled', checked);
+            $('#qrDisplay').html('');
             $('#code').val('');
             $('#total').prop('disabled', !checked);
             $('#total').val(1);
