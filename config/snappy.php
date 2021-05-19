@@ -33,13 +33,13 @@ return [
     |
     */
 
-    'binary' => env('APP_ENV', 'local') !== 'local' ? '/usr/local/bin/wkhtmltopdf-amd64' : '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf"',
+    'binary' => env('APP_ENV', 'local') !== 'local' ? '/usr/local/bin/wkhtmltopdf' : '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf"',
 
     'pdf' => [
         'enabled' => true,
         // 'binary'  => env('WKHTML_PDF_BINARY', '/usr/local/bin/wkhtmltopdf'),
         // 'binary'  => env('WKHTML_PDF_BINARY', '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf"'),
-        'binary'  => env('APP_ENV', 'local') !== 'local' ? '/usr/local/bin/wkhtmltopdf-amd64' : '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf"',
+        'binary'  => env('APP_ENV', 'local') !== 'local' ? '/usr/local/bin/wkhtmltopdf' : '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf"',
         'timeout' => false,
         'options' => [],
         'env'     => [],
