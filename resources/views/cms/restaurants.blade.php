@@ -100,7 +100,7 @@
                             <input type="hidden" name="linkRestoId" id="linkRestoId">
                         </div>
                         <div class="form-group">
-                            <label>Availeble QR Code</label>
+                            <label>Available QR Code</label>
                             <select class="form-control select2" name="linkCode" id="linkCode" style="width: 100%;"></select>
                             <span id="linkCode_invalid" class="invalid-feedback d-block" role="alert"></span>
                         </div>
@@ -341,6 +341,22 @@
             });
         });
 
+        $('body').on('click', '#btnSearch', function () {
+            searching();
+        });
+
+        $('body').on('click', '#btnMore', function () {
+            loadList();
+        });
+
+        function searching() {
+            const search = $('#search').val();
+            let query = search === '' ? '' : `?search=${search}`;
+            lastId = 0;
+            hasNext = false;
+            loadList(query);
+        }
+
         function showValidation(errors) {
             for (const error in errors) {
                 $(`#${error}`).addClass('is-invalid');
@@ -348,17 +364,17 @@
             }
         }
 
-        function loadList() {
+        function loadList(query = '') {
             loading();
             qrData();
-            $.get(`{{ route('cms.restaurant.index') }}/get-restaurants/${lastId}`, function (res) {
+            $.get(`{{ route('cms.restaurant.index') }}/get-restaurants/${lastId}${query}`, function (res) {
                 if (lastId == 0) {
                     $('#resto_list').html(res.html);
                 }
                 else {
                     $('#resto_list').append(res.html);
                 }
-                lastId += 50;
+                lastId = res.lastId;
                 hasNext = res.hasNext;
                 loading();
 
@@ -376,7 +392,8 @@
                 let html = '';
                 html += `<option></option>`;
                 res.forEach(row => {
-                    html += `<option value="${row.id}">${row.text}</option>`;
+                    let text = row.text.split("{{ SettingHelper::getAll()['qr_prefix'] }}");
+                    html += `<option value="${row.id}">${text[1] ?? row.text}</option>`;
                 });
                 $('#linkCode').html(html);
             });

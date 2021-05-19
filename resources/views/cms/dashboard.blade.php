@@ -30,7 +30,7 @@
                 <div class="col-2">
                     <div class="form-group">
                         <label for="date_end">Date End</label>
-                        <input type="date" name="date_end" id="date_end" class="form-control" value="{{ now()->toDateString() }}" max="{{ now()->toDateString() }}">
+                        <input type="date" name="date_end" id="date_end" class="form-control" value="{{ now()->toDateString() }}" min="{{ now()->toDateString() }}">
                     </div>
                 </div>
                 <div class="col-auto">
@@ -185,7 +185,7 @@
             if ($(this).val() > $('#date_end').val()) {
                 $('#date_end').val($(this).val());
             }
-            $('#date_end').attr('max', $(this).val());
+            $('#date_end').attr('min', $(this).val());
         });
 
         $('body').on('change', '#action', function () {

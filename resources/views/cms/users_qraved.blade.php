@@ -130,12 +130,12 @@
         $('body').on('click', '#btnDetail', function () {
             const id = $(this).attr('data-id');
             $.get(`{{ route('cms.user.qraved.index') }}/get-user/${id}`, function (res) {
-                $('#email').val(res.email);
-                $('#contact').val(res.contact);
-                $('#gender').val(res.gender);
-                $('#birth_date').val(res.birth_date);
-                $('#interest').val(res.interest);
-                $('#job').val(res.job);
+                $('#email').val(res.email == 'null' ? '' : res.email);
+                $('#contact').val(res.contact == 'null' ? '' : res.contact);
+                $('#gender').val(res.gender == 'null' ? '' : res.gender);
+                $('#birth_date').val(res.birth_date == 'null' ? '' : res.birth_date);
+                $('#interest').val(res.interest == 'null' ? '' : res.interest);
+                $('#job').val(res.job == 'null' ? '' : res.job);
                 $('#modalDetailUser').modal('show');
             });
         });
@@ -144,7 +144,7 @@
             const id = $(this).attr('data-id');
             const email = $(this).attr('data-email');
             Swal.fire({
-                title: `You are sure to delete user "${email}"?`,
+                title: `You are sure to delete user "${email.substring(0, 10)}..."?`,
                 showDenyButton: true,
                 showConfirmButton: false,
                 showCancelButton: true,
@@ -194,6 +194,10 @@
 
         $('body').on('click', '#btnSearch', function () {
             searching();
+        });
+
+        $('body').on('click', '#btnMore', function () {
+            loadList();
         });
 
         $(document).ready(() => {

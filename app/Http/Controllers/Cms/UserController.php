@@ -18,14 +18,23 @@ class UserController extends Controller
         return view('cms.users_cms');
     }
 
-    public function getUsers($lastId)
+    public function getUsers($lastId, Request $request)
     {
-        $users = User::where('id', '>', $lastId)->limit(50)->get();
-        $hasNext = User::orderBy('id', 'desc')->first()->id;
+        $filter = $this->parseUrlQuery($request->fullUrl());
+        $users = User::where('id', '>', $lastId)
+                     ->when($filter->count() > 0, function ($query) use ($filter) {
+                         return $query->where('name', 'like', '%'. $filter['search'] .'%');
+                     })
+                    ->limit(10)
+                    ->get();
+        $hasNext = User::when($filter->count() > 0, function ($query) use ($filter) {
+                           return $query->where('name', 'like', '%'. $filter['search'] .'%');
+                       })
+                       ->orderBy('id', 'desc')->first()->id ?? 0;
         return [
             'html' => view('includes.get-users', compact('users'))->render(),
-            'lastId' => $users->last()->id,
-            'hasNext' => $hasNext > $users->last()->id,
+            'lastId' => $users->last()->id ?? 0,
+            'hasNext' => $hasNext > ($users->last()->id ?? 0),
         ];
     }
 
@@ -121,11 +130,14 @@ class UserController extends Controller
                            })
                            ->limit(10)
                            ->get();
-        $hasNext = QravedUser::orderBy('id', 'desc')->first()->id;
+        $hasNext = QravedUser::when($filter->count() > 0, function ($query) use ($filter) {
+                                return $query->where('email', 'like', '%'. $filter['search'] .'%');
+                            })
+                            ->orderBy('id', 'desc')->first()->id ?? 0;
         return [
             'html' => view('includes.get-users-qraved', compact('users'))->render(),
-            'lastId' => $users->last()->id,
-            'hasNext' => $hasNext > $users->last()->id,
+            'lastId' => $users->last()->id ?? 0,
+            'hasNext' => $hasNext > ($users->last()->id ?? 0),
         ];
     }
 

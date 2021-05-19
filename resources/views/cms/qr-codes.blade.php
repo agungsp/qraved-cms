@@ -158,6 +158,16 @@
         });
 
         $('body').on('click', '#btnSave', function () {
+            if ($('#code').val() === '' || $('#code').val().length < 10) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Code field is not valid!',
+                    footer: '<span>Click generate button to generate the code</span>'
+                });
+                return false;
+            }
+
             $.ajax({
                 type: "POST",
                 url: "{{ route('cms.qr-code.store') }}",
@@ -203,7 +213,7 @@
             const id = $('#id').val();
             const code = $('#code').val();
             Swal.fire({
-                title: `You are sure to delete QR Code "${code}"?`,
+                title: `You are sure to delete this QR Code?`,
                 showDenyButton: true,
                 showConfirmButton: false,
                 showCancelButton: true,
@@ -258,16 +268,24 @@
             }
         }
 
-        function loadList() {
+        function searching() {
+            const search = $('#search').val();
+            let query = search === '' ? '' : `?search=${search}`;
+            lastId = 0;
+            hasNext = false;
+            loadList(query);
+        }
+
+        function loadList(query = '') {
             loading();
-            $.get(`{{ route('cms.qr-code.index') }}/get-qrcodes/${lastId}`, function (res) {
+            $.get(`{{ route('cms.qr-code.index') }}/get-qrcodes/${lastId}${query}`, function (res) {
                 if (lastId == 0) {
                     $('#qrcode_list').html(res.html);
                 }
                 else {
                     $('#qrcode_list').append(res.html);
                 }
-                lastId += 50;
+                lastId = res.lastId;
                 hasNext = res.hasNext;
                 loading();
                 if (hasNext) {
@@ -290,6 +308,10 @@
             if (randomString.length > length) return randomString.slice(0, length);
             return generateRandomString(length, randomString);
         };
+
+        $('body').on('click', '#btnSearch', function () {
+            searching();
+        });
 
         $(document).ready(() => {
             loadList();

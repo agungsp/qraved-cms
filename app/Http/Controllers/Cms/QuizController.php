@@ -15,12 +15,22 @@ class QuizController extends Controller
         return view('cms.quiz');
     }
 
-    public function getQuestions($lastId)
+    public function getQuestions($lastId, Request $request)
     {
-        $questions = QuestionBank::where('id', '>', $lastId)->limit(50)->get();
+        $filter = $this->parseUrlQuery($request->fullUrl());
+        $questions = QuestionBank::where('id', '>', $lastId)
+                                 ->when($filter->count() > 0, function ($query) use ($filter) {
+                                     return $query->where('question', 'like', '%'. $filter['search'] .'%');
+                                 })
+                                 ->limit(10)->get();
+        $hasNext = QuestionBank::when($filter->count() > 0, function ($query) use ($filter) {
+                                   return $query->where('question', 'like', '%'. $filter['search'] .'%');
+                               })
+                               ->orderBy('id', 'desc')->first()->id ?? 0;
         return [
             'html' => view('includes.get-quiz', compact('questions'))->render(),
-            'hasNext' => !($questions->count() < 50),
+            'lastId' => $questions->last()->id ?? 0,
+            'hasNext' => $hasNext > ($questions->last()->id ?? 0),
         ];
     }
 
@@ -132,6 +142,34 @@ class QuizController extends Controller
 
     public function delete(Request $request)
     {
+        $success = true;
+        $message = '';
+        try {
 
+            $user = QuestionBank::find($request->id)->delete();
+            $message = 'The question has been deleted!';
+
+        } catch (\Exception $e) {
+            $success = false;
+            $message = $e->getMessage();
+        }
+
+        return [
+            'success' => $success,
+            'message' => $message,
+        ];
+    }
+
+    private function parseUrlQuery($url)
+    {
+        $query = explode('&', parse_url($url, PHP_URL_QUERY));
+        $result = collect();
+        foreach ($query as $item) {
+            if (!empty($item)) {
+                $data = explode('=', $item);
+                $result->put($data[0], $data[1]);
+            }
+        }
+        return $result;
     }
 }

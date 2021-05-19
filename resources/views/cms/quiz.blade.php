@@ -284,6 +284,57 @@
             });
         });
 
+        $('body').on('click', '#btnDelete', function () {
+            const id = $(this).attr('data-id');
+            Swal.fire({
+                title: `You are sure to delete this question?`,
+                showDenyButton: true,
+                showConfirmButton: false,
+                showCancelButton: true,
+                denyButtonText: `Delete`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isDenied) {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('cms.quiz.delete') }}",
+                        data: {
+                            id: id
+                        },
+                        success: function(response) {
+                            lastId = 0;
+                            hasNext = false;
+                            Swal.fire({
+                                icon : response.success ? 'success' : 'error',
+                                title: response.success ? `Success` : 'Failed',
+                                text : response.message,
+                                timer: 3000,
+                                timerProgressBar: true,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $('#modalQuiz').modal('hide');
+                                    loadList();
+                                }
+                                else if (result.isDismissed) {
+                                    $('#modalQuiz').modal('hide');
+                                    loadList();
+                                }
+                            });
+                        },
+                        error: function(response) {
+                            Swal.fire({
+                                    icon : response.success ? 'success' : 'error',
+                                    title: response.success ? 'Success' : 'Failed',
+                                    text : response.message,
+                                    // timer: 2000,
+                                    // timerProgressBar: true,
+                                });
+                        }
+                    });
+                }
+            });
+        });
+
         $('#formQuiz').submit(function (e) {
             e.preventDefault();
             let formData = new FormData(this);
@@ -370,16 +421,16 @@
             $('#loading').toggleClass('d-none');
         }
 
-        function loadList() {
+        function loadList(query = '') {
             loading();
-            $.get(`{{ route('cms.quiz.index') }}/get-questions/${lastId}`, function (res) {
+            $.get(`{{ route('cms.quiz.index') }}/get-questions/${lastId}${query}`, function (res) {
                 if (lastId == 0) {
                     $('#quiz_list').html(res.html);
                 }
                 else {
                     $('#quiz_list').append(res.html);
                 }
-                lastId += 50;
+                lastId = res.lastId;
                 hasNext = res.hasNext;
                 loading();
 
@@ -392,12 +443,28 @@
             });
         }
 
+        function searching() {
+            const search = $('#search').val();
+            let query = search === '' ? '' : `?search=${search}`;
+            lastId = 0;
+            hasNext = false;
+            loadList(query);
+        }
+
         function showValidation(errors) {
             for (const error in errors) {
                 $(`#${error}`).addClass('is-invalid');
                 $('#'+error+'_invalid').html(errors[error][0]);
             }
         }
+
+        $('body').on('click', '#btnSearch', function () {
+            searching();
+        });
+
+        $('body').on('click', '#btnMore', function () {
+            loadList();
+        });
 
         $(document).ready(() => {
             bsCustomFileInput.init();

@@ -18,12 +18,22 @@ class RestaurantController extends Controller
         return view('cms.restaurants');
     }
 
-    public function getRestaurants($lastId)
+    public function getRestaurants($lastId, Request $request)
     {
-        $restaurants = Restaurant::where('id', '>', $lastId)->limit(50)->get();
+        $filter = $this->parseUrlQuery($request->fullUrl());
+        $restaurants = Restaurant::where('id', '>', $lastId)
+                                 ->when($filter->count() > 0, function ($query) use ($filter) {
+                                     return $query->where('name', 'like', '%'. $filter['search'] .'%');
+                                 })
+                                 ->limit(10)->get();
+        $hasNext = Restaurant::when($filter->count() > 0, function ($query) use ($filter) {
+                                 return $query->where('name', 'like', '%'. $filter['search'] .'%');
+                             })
+                             ->orderBy('id', 'desc')->first()->id ?? 0;
         return [
             'html' => view('includes.get-restaurants', compact('restaurants'))->render(),
-            'hasNext' => !($restaurants->count() < 50),
+            'lastId' => $restaurants->last()->id ?? 0,
+            'hasNext' => $hasNext > ($restaurants->last()->id ?? 0),
         ];
     }
 
@@ -38,12 +48,12 @@ class RestaurantController extends Controller
         $message = '';
 
         $request->validate([
-            'name' => ['required'],
+            'name' => ['required', 'max:255'],
             'address' => ['required', 'min:5'],
         ]);
 
         $data = [
-            'qraved_resto_mapping_id' => $request->qraved_mapping_id,
+            'qraved_resto_mapping_id' => $request->qraved_mapping_id ?? 0,
             'name' => $request->name,
             'alias' => $request->alias,
             'address' => $request->address,
@@ -170,5 +180,18 @@ class RestaurantController extends Controller
     public function resto()
     {
         return view('cms.resto');
+    }
+
+    private function parseUrlQuery($url)
+    {
+        $query = explode('&', parse_url($url, PHP_URL_QUERY));
+        $result = collect();
+        foreach ($query as $item) {
+            if (!empty($item)) {
+                $data = explode('=', $item);
+                $result->put($data[0], $data[1]);
+            }
+        }
+        return $result;
     }
 }

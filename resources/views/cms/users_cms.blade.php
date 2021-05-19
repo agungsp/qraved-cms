@@ -117,9 +117,17 @@
             }
         }
 
-        function loadList() {
+        function searching() {
+            const search = $('#search').val();
+            let query = search === '' ? '' : `?search=${search}`;
+            lastId = 0;
+            hasNext = false;
+            loadList(query);
+        }
+
+        function loadList(query = '') {
             loading();
-            $.get(`{{ route('cms.user.cms.index') }}/get-users/${lastId}`, function (res) {
+            $.get(`{{ route('cms.user.cms.index') }}/get-users/${lastId}${query}`, function (res) {
                 if (lastId == 0) {
                     $('#user_list').html(res.html);
                 }
@@ -281,6 +289,14 @@
                     }
                 }
             });
+        });
+
+        $('body').on('click', '#btnSearch', function () {
+            searching();
+        });
+
+        $('body').on('click', '#btnMore', function () {
+            loadList();
         });
 
         $(document).ready(() => {

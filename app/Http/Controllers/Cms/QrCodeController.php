@@ -17,12 +17,22 @@ class QrCodeController extends Controller
         return view('cms.qr-codes');
     }
 
-    public function getQrcodes($lastId)
+    public function getQrcodes($lastId, Request $request)
     {
-        $qrcodes = QrCode::where('id', '>', $lastId)->limit(50)->get();
+        $filter = $this->parseUrlQuery($request->fullUrl());
+        $qrcodes = QrCode::where('id', '>', $lastId)
+                         ->when($filter->count() > 0, function ($query) use ($filter) {
+                             return $query->where('code', 'like', '%'. $filter['search'] .'%');
+                         })
+                         ->limit(10)->get();
+        $hasNext = QrCode::when($filter->count() > 0, function ($query) use ($filter) {
+                             return $query->where('code', 'like', '%'. $filter['search'] .'%');
+                         })
+                         ->orderBy('id', 'desc')->first()->id ?? 0;
         return [
             'html' => view('includes.get-qrcodes', compact('qrcodes'))->render(),
-            'hasNext' => !($qrcodes->count() < 50),
+            'lastId' => $qrcodes->last()->id ?? 0,
+            'hasNext' => $hasNext > ($qrcodes->last()->id ?? 0),
         ];
     }
 
@@ -105,5 +115,18 @@ class QrCodeController extends Controller
     public function qrBuilder($randomCode)
     {
         return SettingHelper::qrCodeBuilder(base64_decode($randomCode));
+    }
+
+    private function parseUrlQuery($url)
+    {
+        $query = explode('&', parse_url($url, PHP_URL_QUERY));
+        $result = collect();
+        foreach ($query as $item) {
+            if (!empty($item)) {
+                $data = explode('=', $item);
+                $result->put($data[0], $data[1]);
+            }
+        }
+        return $result;
     }
 }
