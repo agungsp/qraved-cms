@@ -124,6 +124,12 @@
                                 </div>
                                 Logs
                             </a>
+                            <a class="nav-link" href="{{ route('cms.documentation') }}" target="_blank">
+                                <div class="sb-nav-link-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                API Documentation
+                            </a>
                         </div>
                     </div>
                     {{-- <div class="sb-sidenav-footer">

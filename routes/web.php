@@ -95,6 +95,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('store', [App\Http\Controllers\Cms\SettingController::class, 'store'])->name('cms.setting.store');
     });
 
+    Route::view('documentation', 'cms.documentation')->name('cms.documentation');
+
 });
 
 Route::prefix('images')->group(function () {
