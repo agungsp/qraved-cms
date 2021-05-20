@@ -59,7 +59,7 @@
             <hr>
 
             <div class="row mt-5">
-                <div class="col-12">
+                <div class="col">
                     <div class="form-group">
                         <label for="action">Cari berdasarkan action</label>
                         <select name="action" id="action" class="form-control">
@@ -69,6 +69,13 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-auto">
+                    <a href="" id="btnExport" class="btn btn-success" style="margin-top: 2rem;">
+                        <i class="fas fa-file-csv"></i> Export
+                    </a>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col">
                     <table class="table table-stripped table-hover">
                         <thead>
@@ -174,6 +181,7 @@
             $.get(`{{ route('cms.dashboard.get-table') }}?${queryFilterBuilder()}`, function (result) {
                 $('#table').html(result);
             });
+            $('#btnExport').attr('href', `{{ route('cms.dashboard.export-table') }}?${queryFilterBuilder()}`);
         }
 
         $('body').on('click', '#btnApply', function () {

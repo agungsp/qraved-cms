@@ -27,6 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [App\Http\Controllers\Cms\DashboardController::class, 'index'])->name('cms.dashboard.index');
         Route::get('get-chart', [App\Http\Controllers\Cms\DashboardController::class, 'getChart'])->name('cms.dashboard.get-chart');
         Route::get('get-table', [App\Http\Controllers\Cms\DashboardController::class, 'getTable'])->name('cms.dashboard.get-table');
+        Route::get('export-table', [App\Http\Controllers\Cms\DashboardController::class, 'exportTable'])->name('cms.dashboard.export-table');
     });
 
     Route::prefix('users')->group(function () {

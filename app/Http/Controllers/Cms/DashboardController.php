@@ -8,6 +8,8 @@ use App\Models\QravedUserLog;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Restaurant;
+use App\Exports\DashboardTableExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DashboardController extends Controller
 {
@@ -70,6 +72,29 @@ class DashboardController extends Controller
             $html .= '</tr>';
         }
         return $html;
+    }
+
+    public function exportTable(Request $request)
+    {
+        $filter = $this->parseUrlQuery($request->fullUrl());
+        $data = collect();
+        $restaurants = Restaurant::all();
+        foreach ($restaurants as $resto) {
+            $count = QravedUserLog::whereDate('created_at', '>=', $filter['date_start'])
+                                  ->whereDate('created_at', '<', Carbon::create($filter['date_end'])->addDay()->toDateString())
+                                  ->where('restaurant_id', $resto->id)
+                                  ->where('action', str_replace('%20', ' ', $filter['filter_action']))
+                                  ->count();
+
+            $data->push([
+                'date_start' => $filter['date_start'],
+                'date_end' => $filter['date_end'],
+                'restaurant' => $resto->name,
+                'count' => $count
+            ]);
+        }
+
+        return Excel::download(new DashboardTableExport($data), 'dashboard_table_' . now()->format('Ymd_His') . '.csv');
     }
 
     private function parseUrlQuery($url)
