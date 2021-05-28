@@ -100,7 +100,8 @@
         });
 
         $('body').on('click', '#btnGenerateCode', function () {
-            let code = generateRandomString({{ SettingHelper::getAll()['qr_length'] }}, "{{ SettingHelper::getAll()['qr_prefix'] ?? '' }}");
+            // let code = generateRandomString({{ SettingHelper::getAll()['qr_length'] }}, "{{ SettingHelper::getAll()['qr_prefix'] ?? '' }}");
+            let code = generateRandomString(20, "{{ SettingHelper::getAll()['qr_prefix'] ?? '' }}");
             $.get(`{{ route('cms.qr-code.index') }}/qr-builder/${btoa(code)}`, function (res) {
                 $('#code').val(res);
                 getQR(res);
@@ -158,14 +159,16 @@
         });
 
         $('body').on('click', '#btnSave', function () {
-            if ($('#code').val() === '' || $('#code').val().length < 10) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Code field is not valid!',
-                    footer: '<span>Click generate button to generate the code</span>'
-                });
-                return false;
+            if (!$('#makeAFew').prop('checked')) {
+                if ($('#code').val() === '' || $('#code').val().length < 10) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Code field is not valid!',
+                        footer: '<span>Click generate button to generate the code</span>'
+                    });
+                    return false;
+                }
             }
 
             $.ajax({
@@ -259,6 +262,14 @@
                     });
                 }
             })
+        });
+
+        $('body').on('keyup', '#code', function () {
+            // let code = $(this).val();
+            // $.get(`{{ route('cms.qr-code.index') }}/qr-builder/${btoa(code)}`, function (res) {
+            //     $('#code').val(res);
+            //     getQR(res);
+            // });
         });
 
         function showValidation(errors) {

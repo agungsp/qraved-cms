@@ -30,19 +30,19 @@
                             <input type="text" name="url" id="url" class="form-control" value="{{ $settings['qr_url'] ?? url('/resto') }}">
                             <span id="url_invalid" class="invalid-feedback" role="alert"></span>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="qr_length">
-                                QR Length (max 20)
+                                QR Length
                                 <span class="small text-muted">length = [prefix + random string]</span>
                             </label>
-                            <input type="number" name="qr_length" id="qr_length" class="form-control" value="{{ $settings['qr_length'] ?? '20' }}">
+                            <input type="number" name="qr_length" id="qr_length" class="form-control" value="{{ $settings['qr_length'] ?? '255' }}">
                             <span id="qr_length_invalid" class="invalid-feedback" role="alert"></span>
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label for="qr_prefix">
                                 QR Prefix
                             </label>
-                            <input type="text" name="qr_prefix" id="qr_prefix" class="form-control" value="?res=">
+                            <input type="text" name="qr_prefix" id="qr_prefix" class="form-control" value="{{ $settings['qr_prefix'] ?? '?res=' }}">
                         </div>
                         <div class="row justify-content-end">
                             <div class="col-auto">

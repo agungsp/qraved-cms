@@ -29,7 +29,7 @@ class SettingController extends Controller
         $message = '';
         $request->validate([
             'url' => ['required'],
-            'qr_length' => ['required', 'numeric', 'min:10', 'max:20'],
+            // 'qr_length' => ['required', 'numeric', 'min:10', 'max:255'],
         ]);
 
         try {
@@ -38,10 +38,10 @@ class SettingController extends Controller
                     ['key' => 'qr_url'],
                     ['value' => $request->url]
                 );
-                Setting::updateOrCreate(
-                    ['key' => 'qr_length'],
-                    ['value' => $request->qr_length]
-                );
+                // Setting::updateOrCreate(
+                //     ['key' => 'qr_length'],
+                //     ['value' => $request->qr_length]
+                // );
                 Setting::updateOrCreate(
                     ['key' => 'qr_prefix'],
                     ['value' => $request->qr_prefix]

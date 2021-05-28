@@ -12,7 +12,7 @@ class RestaurantController extends Controller
     public function get($unique_code)
     {
         try {
-            $restaurant = QrCode::where('code', 'like', '%' . $unique_code)->first()->restaurant;
+            $restaurant = QrCode::where('code', 'like', '%' . $unique_code . '%')->first()->restaurant;
             return StdResponseHelper::make(true, '', $restaurant);
         } catch (\Exception $e) {
             return StdResponseHelper::make(false, $e->getMessage());
