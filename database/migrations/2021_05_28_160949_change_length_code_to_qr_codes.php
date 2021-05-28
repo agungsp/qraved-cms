@@ -14,7 +14,7 @@ class ChangeLengthCodeToQrCodes extends Migration
     public function up()
     {
         Schema::table('qr_codes', function (Blueprint $table) {
-            $table->string('code', 1000)->change();
+            $table->text('code')->change();
         });
     }
 

@@ -50,7 +50,7 @@ class QrCodeController extends Controller
             'total' => Rule::requiredIf($request->makeAFew),
         ]);
         $total = $request->total ?? 1;
-        $qr_length = 20; // SettingHelper::getAll()['qr_length'];
+        $qr_length = Str::length(SettingHelper::getAll()['qr_prefix']) + 20; // SettingHelper::getAll()['qr_length'];
         $qr_prefix = SettingHelper::getAll()['qr_prefix'];
 
         $data = [];

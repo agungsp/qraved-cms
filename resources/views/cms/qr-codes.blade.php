@@ -101,7 +101,7 @@
 
         $('body').on('click', '#btnGenerateCode', function () {
             // let code = generateRandomString({{ SettingHelper::getAll()['qr_length'] }}, "{{ SettingHelper::getAll()['qr_prefix'] ?? '' }}");
-            let code = generateRandomString(20, "{{ SettingHelper::getAll()['qr_prefix'] ?? '' }}");
+            let code = generateRandomString({{ Str::length(SettingHelper::getAll()['qr_prefix'] ?? '') + 20}}, "{{ SettingHelper::getAll()['qr_prefix'] ?? '' }}");
             $.get(`{{ route('cms.qr-code.index') }}/qr-builder/${btoa(code)}`, function (res) {
                 $('#code').val(res);
                 getQR(res);
