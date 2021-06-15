@@ -7,7 +7,14 @@
 
 {{-- CSS --}}
 @section('css')
-
+    <style>
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 80vh;
+            width: 80vw;
+        }
+    </style>
 @endsection
 
 {{-- TITLE --}}
@@ -21,27 +28,34 @@
     <div class="card">
         <div class="card-body">
             <div class="row mb-5">
-                <div class="col-2">
+                <div class="col-lg-2">
                     <div class="form-group">
                         <label for="date_start">Date Start</label>
                         <input type="date" name="date_start" id="date_start" class="form-control" value="{{ now()->toDateString() }}">
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-lg-2">
                     <div class="form-group">
                         <label for="date_end">Date End</label>
                         <input type="date" name="date_end" id="date_end" class="form-control" value="{{ now()->toDateString() }}" min="{{ now()->toDateString() }}">
                     </div>
                 </div>
-                <div class="col-auto">
-                    <button id="btnApply" class="btn qraved-btn-primary" style="margin-top: 2rem;">
+                <div class="col-lg-auto">
+                    <button id="btnApply" class="btn qraved-btn-primary @mobile btn-block @endmobile"
+                        @tablet
+                            style="margin-top: 2rem;"
+                        @endtablet
+                        @desktop
+                            style="margin-top: 2rem;"
+                        @endtablet
+                        >
                         Apply
                     </button>
                 </div>
             </div>
             <div class="row justify-content-center mb-5">
                 <div class="col-12">
-                    <div class="form-group" style="width: 10rem;">
+                    <div class="form-group" @if (!Browser::isMobile())  style="width: 10rem;" @endif>
                         <label for="resto">Restaurant</label>
                         <select name="resto" id="resto" class="form-control">
                             <option value="0">All</option>
@@ -51,15 +65,15 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-9">
-                    <canvas id="pie_chart" width="400" height="200"></canvas>
+                <div class="col-12 chart-container">
+                    <canvas id="pie_chart" width="400"></canvas>
                 </div>
             </div>
 
             <hr>
 
-            <div class="row mt-5">
-                <div class="col">
+            <div class="row mt-5 justify-content-between">
+                <div class="col-xl-7 col-md-7 col-xs-12">
                     <div class="form-group">
                         <label for="action">Cari berdasarkan action</label>
                         <select name="action" id="action" class="form-control">
@@ -69,8 +83,8 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-auto">
-                    <a href="" id="btnExport" class="btn btn-success" style="margin-top: 2rem;">
+                <div class="col-xl-2 col-md-3 col-xs-12">
+                    <a href="javascript:void(0)" id="btnExport" class="btn btn-success btn-block" @if (!Browser::isMobile()) style="margin-top: 2rem;" @endif>
                         <i class="fas fa-file-csv"></i> Export
                     </a>
                 </div>
@@ -118,9 +132,9 @@
                 datasets: []
             },
             options: {
-                responsive: true,
+                maintainAspectRatio: false,
                 legend: {
-                    position: 'left'
+                    position: '{{ Browser::isMobile() ? 'bottom' : 'left' }}'
                 },
                 tooltips: {
                     enabled: false

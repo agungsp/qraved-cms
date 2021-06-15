@@ -26,7 +26,8 @@ class DashboardController extends Controller
     public function index()
     {
         $restaurants = Restaurant::all();
-        $actions = QravedUserLog::groupBy('action')->pluck('action');
+        $actions = QravedUserLog::groupBy('action')
+                                ->pluck('action');
         return view('cms.dashboard', compact('restaurants', 'actions'));
     }
 
