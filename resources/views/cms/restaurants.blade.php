@@ -7,7 +7,8 @@
 
 {{-- CSS --}}
 @section('css')
-    <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('assets/plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 @endsection
 
 {{-- TITLE --}}
@@ -142,9 +143,9 @@
 
 {{-- JS --}}
 @section('js')
-    <script src="{{ asset('assets/plugins/cleave/cleave.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/cleave/addons/cleave-phone.id.js') }}"></script>
-    <script src="{{ asset('assets/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ secure_asset('assets/plugins/cleave/cleave.min.js') }}"></script>
+    <script src="{{ secure_asset('assets/plugins/cleave/addons/cleave-phone.id.js') }}"></script>
+    <script src="{{ secure_asset('assets/plugins/select2/js/select2.full.min.js') }}"></script>
     <script>
         let lastId = 0;
         let hasNext = true;
@@ -178,7 +179,7 @@
 
         $('body').on('click', '#btnEdit', function () {
             const id = $(this).attr('data-id');
-            $.get(`{{ route('cms.restaurant.index') }}/get-restaurant/${id}`, function (res) {
+            $.get(`{{ secure_url(route('cms.restaurant.index', [], false)) }}/get-restaurant/${id}`, function (res) {
                 $('#id').val(res.id);
                 $('#qraved_mapping_id').val(res.qraved_resto_mapping_id == 0 ? '' : res.qraved_resto_mapping_id);
                 $('#name').val(res.name);
@@ -195,7 +196,7 @@
         $('body').on('click', '#btnSave', function () {
             $.ajax({
                 type: "POST",
-                url: "{{ route('cms.restaurant.store') }}",
+                url: "{{ secure_url(route('cms.restaurant.store', [], false)) }}",
                 data: $('#formRestaurant').serialize(),
                 success: function(response) {
                     lastId = 0;
@@ -294,7 +295,7 @@
                 if (result.isDenied) {
                     $.ajax({
                         type: "POST",
-                        url: "{{ route('cms.restaurant.delete') }}",
+                        url: "{{ secure_url(route('cms.restaurant.delete', [], false)) }}",
                         data: {
                             id: id
                         },
@@ -366,8 +367,7 @@
 
         function loadList(query = '') {
             loading();
-            qrData();
-            $.get(`{{ route('cms.restaurant.index') }}/get-restaurants/${lastId}${query}`, function (res) {
+            $.get(`{{ secure_url(route('cms.restaurant.index', [], false)) }}/get-restaurants/${lastId}`, function (res) {
                 if (lastId == 0) {
                     $('#resto_list').html(res.html);
                 }

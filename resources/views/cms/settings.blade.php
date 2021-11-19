@@ -98,7 +98,7 @@
         }
 
         function getQRCode(text) {
-            $.get(`{{ route('cms.setting.index') }}/get-qrcode/${btoa(text)}`, function (res) {
+            $.get(`{{ secure_url(route('cms.setting.index', [], false)) }}/get-qrcode/${btoa(text)}`, function (res) {
                 $('#qr_display').html(res);
             });
         }
@@ -109,7 +109,7 @@
 
             $.ajax({
                 type       : 'POST',
-                url        : '{{ route('cms.setting.store') }}',
+                url        : '{{ secure_url(route('cms.setting.store', [], false)) }}',
                 data       : formData,
                 contentType: false,
                 processData: false,

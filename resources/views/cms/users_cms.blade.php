@@ -139,92 +139,9 @@
                 loading();
 
                 if (hasNext) {
-                    $('#btnMore').removeClass('d-none');
-                }
-                else {
-                    $('#btnMore').addClass('d-none');
-                }
-            });
-        }
-
-        $('body').on('click', '#btnNew', function () {
-            $('#formUser').trigger('reset');
-            $('#id').val('');
-            $('#password-wrapper').removeClass('d-none');
-            $('#password-confirm-wrapper').removeClass('d-none');
-            $('#btnClose').addClass('d-none');
-            $('#btnDelete').removeClass('d-none');
-            $('#modalUserLabel').html('Add User');
-            $('#modalUser').modal('show');
-        });
-
-        $('#modalUser').on('shown.bs.modal', function () {
-            $('#name').focus();
-        });
-
-        $('body').on('click', '#btnEdit', function () {
-            const id = $(this).attr('data-id');
-            $.get(`{{ route('cms.user.cms.index') }}/get-user/${id}`, function (res) {
-                $('#id').val(res.id);
-                $('#name').val(res.name);
-                $('#email').val(res.email);
-                $('#password-wrapper').addClass('d-none');
-                $('#password-confirm-wrapper').addClass('d-none');
-                if (res.name !== 'admin') {
-                    $('#btnClose').addClass('d-none');
-                    $('#btnDelete').removeClass('d-none');
-                }
-                $('#modalUserLabel').html('Edit User');
-                $('#modalUser').modal('show');
-            });
-        });
-
-        $('body').on('click', '#btnDelete', function () {
-            const id = $('#id').val();
-            const name = $('#name').val();
-            Swal.fire({
-                title: `You are sure to delete user "${name}"?`,
-                showDenyButton: true,
-                showConfirmButton: false,
-                showCancelButton: true,
-                denyButtonText: `Delete`,
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isDenied) {
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ route('cms.user.cms.delete') }}",
-                        data: {
-                            id: id
-                        },
-                        success: function(response) {
-                            lastId = 0;
-                            hasNext = false;
-                            Swal.fire({
-                                icon : response.success ? 'success' : 'error',
-                                title: response.success ? `Success` : 'Failed',
-                                text : response.message,
-                                timer: 3000,
-                                timerProgressBar: true,
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    $('#modalUser').modal('hide');
-                                    loadList();
-                                }
-                                else if (result.isDismissed) {
-                                    $('#modalUser').modal('hide');
-                                    loadList();
-                                }
-                            });
-                        },
-                        error: function(response) {
-                            Swal.fire({
-                                    icon : response.success ? 'success' : 'error',
-                                    title: response.success ? 'Success' : 'Failed',
-                                    text : response.message,
-                                    // timer: 2000,
-                                    // timerProgressBar: true,
-                                });
+                    $.get(`{{ secure_url(route('cms.user.cms.index', [], false)) }}/get-users/${lastId}`, function (res) {
+                        if (lastId == 0) {
+                            $('#user_list').html(res.html);
                         }
                     });
                 }
@@ -301,7 +218,7 @@
 
         $(document).ready(() => {
             loading();
-            $.get(`{{ route('cms.user.cms.index') }}/get-users/${lastId}`, function (res) {
+            $.get(`{{ secure_url(route('cms.user.cms.index', [], false)) }}/get-users/${lastId}`, function (res) {
                 if (lastId == 0) {
                     $('#user_list').html(res.html);
                 }

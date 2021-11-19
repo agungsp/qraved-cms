@@ -221,7 +221,7 @@
 
 {{-- JS --}}
 @section('js')
-    <script src="{{ asset('assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+    <script src="{{ secure_asset('assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
     <script>
         let lastId = 0;
         let hasNext = false;
@@ -257,7 +257,7 @@
 
         $('body').on('click', '#btnEdit', function () {
             const id = $(this).attr('data-id');
-            $.get(`{{ route('cms.quiz.index') }}/get-question/${id}`, function (res) {
+            $.get(`{{ secure_url(route('cms.quiz.index', [], false)) }}/get-question/${id}`, function (res) {
                 $('#id').val(res.id);
                 $('#question').val(res.question);
                 resetAnswerType(res.answer_type);
@@ -341,7 +341,7 @@
 
             $.ajax({
                 type       : 'POST',
-                url        : '{{ route('cms.quiz.store') }}',
+                url        : '{{ secure_url(route('cms.quiz.store', [], false)) }}',
                 data       : formData,
                 contentType: false,
                 processData: false,
@@ -423,7 +423,7 @@
 
         function loadList(query = '') {
             loading();
-            $.get(`{{ route('cms.quiz.index') }}/get-questions/${lastId}${query}`, function (res) {
+            $.get(`{{ secure_url(route('cms.quiz.index', [], false)) }}/get-questions/${lastId}`, function (res) {
                 if (lastId == 0) {
                     $('#quiz_list').html(res.html);
                 }
@@ -469,7 +469,7 @@
         $(document).ready(() => {
             bsCustomFileInput.init();
             loading();
-            $.get(`{{ route('cms.quiz.index') }}/get-questions/${lastId}`, function (res) {
+            $.get(`{{ secure_url(route('cms.quiz.index', [], false)) }}/get-questions/${lastId}`, function (res) {
                 if (lastId == 0) {
                     $('#quiz_list').html(res.html);
                 }
